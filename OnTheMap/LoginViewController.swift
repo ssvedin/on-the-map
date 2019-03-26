@@ -10,6 +10,12 @@ import UIKit
 
 class LoginViewController: UIViewController {
 
+    @IBOutlet weak var emailField: UITextField!
+    @IBOutlet weak var passwordField: UITextField!
+    @IBOutlet weak var loginButton: UIButton!
+    
+    let signUpUrl = URL(string: "https://auth.udacity.com/sign-up")!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,6 +26,9 @@ class LoginViewController: UIViewController {
         performSegue(withIdentifier: "login", sender: sender)
     }
     
+    @IBAction func signUp(_ sender: Any) {
+        UIApplication.shared.open(signUpUrl, options: [:], completionHandler: nil)
+    }
     
-
 }
+
