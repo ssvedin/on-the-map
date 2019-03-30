@@ -33,7 +33,9 @@ class LoginViewController: UIViewController {
     
     func handleLoginResponse(success: Bool, error: Error?) {
         if success {
-            performSegue(withIdentifier: "login", sender: nil)
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "login", sender: nil)
+            }
         } else {
             //TODO: error handling
             print("Login error.")

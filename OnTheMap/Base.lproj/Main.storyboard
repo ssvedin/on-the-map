@@ -158,7 +158,6 @@
                                 </state>
                                 <connections>
                                     <action selector="login:" destination="Wwh-3a-SJn" eventType="touchUpInside" id="AXv-Dr-bEf"/>
-                                    <segue destination="49e-Tb-3d3" kind="show" identifier="login" id="2JZ-4F-bXa"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo-u" translatesAutoresizingMaskIntoConstraints="NO" id="ggt-W6-5yc">
@@ -263,6 +262,7 @@
                         <outlet property="emailField" destination="8Pu-gh-b4V" id="A5t-py-bsS"/>
                         <outlet property="loginButton" destination="aGb-U3-Y1p" id="fgC-7K-RWI"/>
                         <outlet property="passwordField" destination="mYf-Xc-IFZ" id="3ZF-uR-Yzc"/>
+                        <segue destination="49e-Tb-3d3" kind="show" identifier="login" id="8De-1q-2vE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ict-5P-yU4" userLabel="First Responder" sceneMemberID="firstResponder"/>
