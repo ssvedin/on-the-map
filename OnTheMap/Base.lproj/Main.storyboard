@@ -172,7 +172,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="Sign Up"/>
                                 <connections>
-                                    <action selector="signUp:" destination="Wwh-3a-SJn" eventType="touchUpInside" id="UNH-ko-5ph"/>
+                                    <action selector="signUp:" destination="Wwh-3a-SJn" eventType="touchUpInside" id="nWc-wa-bHY"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -219,9 +219,9 @@
                                 <exclude reference="MQt-ij-52h"/>
                                 <exclude reference="e4F-fd-thu"/>
                                 <exclude reference="qfQ-5D-ogp"/>
-                                <exclude reference="xcs-fr-4qt"/>
                                 <exclude reference="FcY-8h-yBP"/>
                                 <exclude reference="Kn4-lL-wSM"/>
+                                <exclude reference="xcs-fr-4qt"/>
                                 <exclude reference="xDQ-tx-Xgl"/>
                                 <exclude reference="4rh-tE-ayS"/>
                                 <exclude reference="HQW-SH-sDz"/>

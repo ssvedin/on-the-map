@@ -19,16 +19,26 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        emailField.text = ""
+        passwordField.text = ""
     }
     
     @IBAction func login(_ sender: UIButton) {
-        performSegue(withIdentifier: "login", sender: sender)
+        UdacityClient.login(email: self.emailField.text ?? "", password: self.passwordField.text ?? "", completion: handleLoginResponse(success:error:))
     }
     
     @IBAction func signUp(_ sender: Any) {
         UIApplication.shared.open(signUpUrl, options: [:], completionHandler: nil)
     }
     
+    func handleLoginResponse(success: Bool, error: Error?) {
+        if success {
+            performSegue(withIdentifier: "login", sender: nil)
+        } else {
+            //TODO: error handling
+            print("Login error.")
+        }
+    }
 }
+
 
