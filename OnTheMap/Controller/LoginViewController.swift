@@ -37,9 +37,15 @@ class LoginViewController: UIViewController {
                 self.performSegue(withIdentifier: "login", sender: nil)
             }
         } else {
-            //TODO: error handling
+            showLoginError(message: error?.localizedDescription ?? "")
             print("Login error.")
         }
+    }
+    
+    func showLoginError(message: String) {
+        let alertVC = UIAlertController(title: "Login Error", message: message, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        show(alertVC, sender: nil)
     }
 }
 

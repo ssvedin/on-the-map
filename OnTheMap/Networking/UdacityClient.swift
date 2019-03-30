@@ -20,25 +20,42 @@ class UdacityClient {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         // encoding a JSON body from a string, can also use a Codable struct
         request.httpBody = "{\"udacity\": {\"username\": \"\(email)\", \"password\": \"\(password)\"}}".data(using: .utf8)
+       
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
                 completion(false, error)
                 return
             }
+            
+            let statusCode = (response as? HTTPURLResponse)?.statusCode
+            if statusCode == 400 || statusCode == 403 {
+                DispatchQueue.main.async {
+                    completion(false, error)
+                }
+            }
+            
+            let decoder = JSONDecoder()
             do {
                 //let responseObject = try JSONDecoder().decode(LoginResponse.self, from: data)
                 let range = 5..<data.count
                 let newData = data.subdata(in: range) /* subset response data! */
                 print(String(data: newData, encoding: .utf8)!)
-                let responseObject = try JSONDecoder().decode(LoginResponse.self, from: newData)
+                let responseObject = try decoder.decode(LoginResponse.self, from: newData)
                 self.sessionId = responseObject.session?.id
                 completion(true, nil)
             } catch {
-                completion(false, error)
+                do {
+                    let errorResponse = try decoder.decode(LoginErrorResponse.self, from: data) as Error
+                    DispatchQueue.main.async {
+                        completion(false, errorResponse)
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        completion(false, error)
+                    }
+                }
             }
-            
         }
-        task.resume()
+       task.resume()
     }
-    
 }
