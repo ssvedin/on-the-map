@@ -12,7 +12,7 @@ class UdacityClient {
     
     static var sessionId: String? = nil
     
-    class func login(email: String, password: String, completion: @escaping (Bool, Error?) -> Void ) {
+    class func login(email: String, password: String, completion: @escaping (Bool, Error?) -> Void) {
         
         var request = URLRequest(url: URL(string: "https://onthemap-api.udacity.com/v1/session")!)
         request.httpMethod = "POST"
@@ -57,5 +57,26 @@ class UdacityClient {
             }
         }
        task.resume()
+    }
+    
+    class func getStudentsLocation(completion: @escaping ([StudentInformation]?, Error?) -> Void) {
+        var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation")!)
+        request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        let task = URLSession.shared.dataTask(with: request) { data, response, error  in
+            guard let data = data else {
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            do {
+                let responseObject = try decoder.decode(StudentsLocation.self, from: data)
+                completion(responseObject.results, nil)
+            } catch {
+                completion(nil, error)
+            }
+            //print(String(data: data!, encoding: .utf8)!)
+        }
+        task.resume()
     }
 }
