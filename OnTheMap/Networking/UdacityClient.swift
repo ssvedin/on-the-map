@@ -18,7 +18,6 @@ class UdacityClient {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        // encoding a JSON body from a string, can also use a Codable struct
         request.httpBody = "{\"udacity\": {\"username\": \"\(email)\", \"password\": \"\(password)\"}}".data(using: .utf8)
        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -36,7 +35,6 @@ class UdacityClient {
             
             let decoder = JSONDecoder()
             do {
-                //let responseObject = try JSONDecoder().decode(LoginResponse.self, from: data)
                 let range = 5..<data.count
                 let newData = data.subdata(in: range) /* subset response data! */
                 print(String(data: newData, encoding: .utf8)!)
@@ -55,8 +53,10 @@ class UdacityClient {
                     }
                 }
             }
+            
         }
        task.resume()
+        
     }
     
     class func getStudentsLocation(completion: @escaping ([StudentInformation]?, Error?) -> Void) {
@@ -75,8 +75,8 @@ class UdacityClient {
             } catch {
                 completion(nil, error)
             }
-            //print(String(data: data!, encoding: .utf8)!)
         }
         task.resume()
     }
+    
 }

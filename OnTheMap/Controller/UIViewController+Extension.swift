@@ -13,7 +13,5 @@ extension UIViewController {
     @IBAction func logout(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
-
- 
-
+    
 }
