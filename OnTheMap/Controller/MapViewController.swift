@@ -14,12 +14,13 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     var locations = [StudentInformation]()
-    var annotations = [MKPointAnnotation]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UdacityClient.getStudentsLocation() {locations, error in
+        var annotations = [MKPointAnnotation]()
+        
+        UdacityClient.getStudentsLocation() { locations, error in
             self.locations = locations ?? []
             
             for dictionary in locations ?? [] {
@@ -36,10 +37,15 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 annotation.coordinate = coordinate
                 annotation.title = "\(first) \(last)"
                 annotation.subtitle = mediaURL
-                self.annotations.append(annotation)
+                annotations.append(annotation)
+            }
+            
+            DispatchQueue.main.async {
+                self.mapView.addAnnotations(annotations)
             }
         }
-            self.mapView.addAnnotations(annotations)
+        
+        
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
