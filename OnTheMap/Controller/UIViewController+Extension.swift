@@ -14,4 +14,8 @@ extension UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func addLocation(sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "addLocation", sender: sender)
+    }
+
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		041497F8225A760A004CB725 /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041497F7225A760A004CB725 /* AddLocationViewController.swift */; };
 		041601C62248061500685EDD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04E67D692246B608007445DC /* Main.storyboard */; };
 		041601EA2248082F00685EDD /* ListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041601E92248082F00685EDD /* ListTableViewController.swift */; };
 		041601EC22480AF700685EDD /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041601EB22480AF700685EDD /* UIViewController+Extension.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		041497F7225A760A004CB725 /* AddLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationViewController.swift; sourceTree = "<group>"; };
 		041601E92248082F00685EDD /* ListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewController.swift; sourceTree = "<group>"; };
 		041601EB22480AF700685EDD /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		0437CEC7224B230500F6E3AC /* UdacityClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UdacityClient.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 				04E67D652246B608007445DC /* MapViewController.swift */,
 				041601E92248082F00685EDD /* ListTableViewController.swift */,
 				041601EB22480AF700685EDD /* UIViewController+Extension.swift */,
+				041497F7225A760A004CB725 /* AddLocationViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -194,6 +197,7 @@
 				04E67D642246B608007445DC /* AppDelegate.swift in Sources */,
 				0437CEC8224B230500F6E3AC /* UdacityClient.swift in Sources */,
 				04E67D662246B608007445DC /* MapViewController.swift in Sources */,
+				041497F8225A760A004CB725 /* AddLocationViewController.swift in Sources */,
 				041601EC22480AF700685EDD /* UIViewController+Extension.swift in Sources */,
 				04B02D29225013F90014CF61 /* LoginErrorResponse.swift in Sources */,
 				0437CECE224B283F00F6E3AC /* LoginResponse.swift in Sources */,

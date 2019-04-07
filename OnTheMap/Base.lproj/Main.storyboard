@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Wwh-3a-SJn">
-    <device id="retina5_9" orientation="landscape">
+    <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -16,7 +16,7 @@
                 <navigationController id="WsE-XN-06w" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="icon_mapview-selected" id="TJv-S6-WZh"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Y4r-5J-dG7">
-                        <rect key="frame" x="0.0" y="0.0" width="812" height="32"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -32,11 +32,11 @@
             <objects>
                 <viewController id="9pv-A4-QxB" userLabel="Map View Controller" customClass="MapViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tsR-hK-woN">
-                        <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="it6-yw-hgt">
-                                <rect key="frame" x="44" y="32" width="724" height="290"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <connections>
                                     <outlet property="delegate" destination="9pv-A4-QxB" id="jeX-dg-EsW"/>
                                 </connections>
@@ -59,7 +59,12 @@
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem image="icon_addpin" id="4bg-7I-NPZ"/>
+                            <barButtonItem image="icon_addpin" id="4bg-7I-NPZ" userLabel="Add Location">
+                                <connections>
+                                    <action selector="addLocationWith_sender:" destination="9pv-A4-QxB" id="SXG-K8-ZWL"/>
+                                    <segue destination="8oZ-MU-TOJ" kind="presentation" identifier="addLocation" id="dX2-BA-g5i"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem title="Item" image="icon_refresh" id="BHr-2Y-o3z"/>
                         </rightBarButtonItems>
                     </navigationItem>
@@ -71,27 +76,31 @@
             </objects>
             <point key="canvasLocation" x="1293.5999999999999" y="-296.40179910044981"/>
         </scene>
-        <!--View Controller-->
+        <!--Add Location View Controller-->
         <scene sceneID="8fX-LO-Afi">
             <objects>
-                <viewController id="8oZ-MU-TOJ" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddLocationViewController" id="8oZ-MU-TOJ" customClass="AddLocationViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Yid-Qe-NWZ">
-                        <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XhD-lH-W9p">
-                                <rect key="frame" x="44" y="0.0" width="724" height="44"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="EVH-Ub-yzO"/>
                                 </constraints>
                                 <items>
                                     <navigationItem title="Add Location" id="Z5c-gg-1mb">
-                                        <barButtonItem key="leftBarButtonItem" title="CANCEL" id="Sqi-dY-Blq"/>
+                                        <barButtonItem key="leftBarButtonItem" title="CANCEL" id="Sqi-dY-Blq">
+                                            <connections>
+                                                <action selector="cancelAddLocation:" destination="8oZ-MU-TOJ" id="hsX-CL-TeL"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a Location" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Hmq-TI-xjg">
-                                <rect key="frame" x="77" y="141" width="658" height="45"/>
+                                <rect key="frame" x="33" y="215" width="309" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="45" id="E2J-jb-Whx"/>
                                     <constraint firstAttribute="height" constant="45" id="JSX-G0-MxV"/>
@@ -101,7 +110,7 @@
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a Website" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="dxr-2g-hZ1">
-                                <rect key="frame" x="77" y="194" width="658" height="45"/>
+                                <rect key="frame" x="33" y="268" width="309" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="2sp-P7-IvY"/>
                                 </constraints>
@@ -110,7 +119,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pa1-t6-cpw">
-                                <rect key="frame" x="77" y="247" width="658" height="45"/>
+                                <rect key="frame" x="33" y="321" width="309" height="45"/>
                                 <color key="backgroundColor" red="0.039863084040000003" green="0.72926415010000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="I3T-3u-9vX"/>
@@ -119,11 +128,12 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
+                                    <action selector="findLocation:" destination="8oZ-MU-TOJ" eventType="touchUpInside" id="85E-8f-pbk"/>
                                     <action selector="login:" destination="Wwh-3a-SJn" eventType="touchUpInside" id="JlR-Lj-vLm"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_world" translatesAutoresizingMaskIntoConstraints="NO" id="dDv-br-fkp">
-                                <rect key="frame" x="380" y="72" width="52" height="67"/>
+                                <rect key="frame" x="161.5" y="124" width="52" height="67"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -159,6 +169,10 @@
                             </mask>
                         </variation>
                     </view>
+                    <connections>
+                        <outlet property="locationTextField" destination="Hmq-TI-xjg" id="at6-j8-Ybn"/>
+                        <outlet property="websiteTextField" destination="dxr-2g-hZ1" id="U6m-bb-SNU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Ln-xN-qWT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -169,15 +183,15 @@
             <objects>
                 <tableViewController id="pSN-bU-5uj" userLabel="List Table View Controller" customClass="ListTableViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="qje-sF-b6R">
-                        <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="StudentTableViewCell" id="j0L-Cq-aaF">
-                                <rect key="frame" x="0.0" y="28" width="812" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="j0L-Cq-aaF" id="dOj-Nx-OLw">
-                                    <rect key="frame" x="44" y="0.0" width="724" height="43.666666666666664"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -195,7 +209,12 @@
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem image="icon_addpin" id="Hmg-lo-5DI"/>
+                            <barButtonItem image="icon_addpin" id="Hmg-lo-5DI" userLabel="Add Location">
+                                <connections>
+                                    <action selector="addLocationWith_sender:" destination="pSN-bU-5uj" id="MuW-vN-v2r"/>
+                                    <segue destination="8oZ-MU-TOJ" kind="presentation" identifier="addLocation" id="ihN-bL-qAo"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem image="icon_refresh" id="G8R-Ua-fSO"/>
                         </rightBarButtonItems>
                     </navigationItem>
@@ -214,7 +233,7 @@
                 <navigationController id="t14-cT-RT5" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="icon_listview-selected" id="DSZ-Qw-Ypa"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iS4-Fh-oRl">
-                        <rect key="frame" x="0.0" y="0.0" width="812" height="32"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -230,11 +249,11 @@
             <objects>
                 <viewController id="Wwh-3a-SJn" customClass="LoginViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WIo-r6-UEj">
-                        <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8Pu-gh-b4V">
-                                <rect key="frame" x="60" y="126" width="692" height="45"/>
+                                <rect key="frame" x="35" y="215" width="309" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="6Zs-bR-7pv"/>
                                 </constraints>
@@ -243,7 +262,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="mYf-Xc-IFZ">
-                                <rect key="frame" x="60" y="179" width="692" height="45"/>
+                                <rect key="frame" x="35" y="268" width="309" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="CVS-7m-oqN"/>
                                 </constraints>
@@ -252,7 +271,7 @@
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Don't have an account?" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="1ea-hP-uCk" userLabel="Sign Up text">
-                                <rect key="frame" x="60" y="284" width="677" height="25"/>
+                                <rect key="frame" x="35" y="373" width="309" height="25"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="QrS-hH-ZCN"/>
@@ -261,7 +280,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aGb-U3-Y1p">
-                                <rect key="frame" x="60" y="232" width="692" height="45"/>
+                                <rect key="frame" x="35" y="321" width="309" height="45"/>
                                 <color key="backgroundColor" red="0.039863084038216923" green="0.72926415007598977" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="MHs-TR-maA"/>
@@ -274,10 +293,10 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo-u" translatesAutoresizingMaskIntoConstraints="NO" id="ggt-W6-5yc">
-                                <rect key="frame" x="375" y="54" width="62" height="62"/>
+                                <rect key="frame" x="156.5" y="129" width="62" height="62"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LKw-Ba-DtA">
-                                <rect key="frame" x="380.66666666666669" y="317" width="51" height="22"/>
+                                <rect key="frame" x="162" y="406" width="51" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="TPP-40-6QL"/>
                                 </constraints>
@@ -410,4 +429,7 @@
         <image name="icon_world" width="52" height="67"/>
         <image name="logo-u" width="62" height="62"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="ihN-bL-qAo"/>
+    </inferredMetricsTieBreakers>
 </document>
