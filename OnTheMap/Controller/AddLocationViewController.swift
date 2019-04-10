@@ -27,5 +27,12 @@ class AddLocationViewController: UIViewController {
     @IBAction func findLocation(sender: UIButton) {
         self.performSegue(withIdentifier: "finishAddLocation", sender: sender)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "finishAddLocation" {
+            let controller = segue.destination as! FinishAddLocationViewController
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
 
 }
