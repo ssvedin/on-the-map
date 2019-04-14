@@ -8,9 +8,25 @@
 
 import Foundation
 
-class UdacityClient {
+class UdacityClient: NSObject {
     
-    static var sessionId: String? = nil
+    struct Auth {
+        static var sessionId: String? = nil
+        static var key: String? = nil
+        static var userName: String? = nil
+    }
+    
+    override init() {
+        super.init()
+    }
+
+    
+    class func shared() -> UdacityClient {
+        struct Singleton {
+            static var shared = UdacityClient()
+        }
+        return Singleton.shared
+    }
     
     class func login(email: String, password: String, completion: @escaping (Bool, Error?) -> Void) {
         
@@ -39,7 +55,8 @@ class UdacityClient {
                 let newData = data.subdata(in: range) /* subset response data! */
                 print(String(data: newData, encoding: .utf8)!)
                 let responseObject = try decoder.decode(LoginResponse.self, from: newData)
-                self.sessionId = responseObject.session?.id
+                Auth.sessionId = responseObject.session?.id
+                Auth.key = responseObject.account?.key
                 completion(true, nil)
             } catch {
                 do {
@@ -75,6 +92,34 @@ class UdacityClient {
             } catch {
                 completion(nil, error)
             }
+        }
+        task.resume()
+    }
+    
+    class func addStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
+        var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation")!)
+        request.httpMethod = "POST"
+        request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName ?? "")\", \"lastName\": \"\(information.lastName ?? "")\",\"mapString\": \"\(information.mapString ?? ""))\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}".data(using: .utf8)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                completion(false, error)
+                return
+            }
+            var response: PostLocationResponse!
+            let decoder = JSONDecoder()
+            do {
+                print(String(data: data, encoding: .utf8)!)
+                response = try decoder.decode(PostLocationResponse.self, from: data)
+                if let response = response, response.createdAt != nil {
+                    completion(true, nil)
+                }
+            } catch {
+                 completion(false, error)
+            }
+            
         }
         task.resume()
     }

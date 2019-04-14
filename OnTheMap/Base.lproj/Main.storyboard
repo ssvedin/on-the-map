@@ -107,7 +107,10 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="8oZ-MU-TOJ" id="fak-4D-sUv"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a Website" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="dxr-2g-hZ1">
                                 <rect key="frame" x="33" y="268" width="309" height="45"/>
@@ -201,7 +204,7 @@
                                 </state>
                             </button>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K9X-PL-Xnz">
-                                <rect key="frame" x="0.0" y="20" width="336" height="44"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <items>
                                     <navigationItem title="Add Location" id="UzU-D7-aiq">
                                         <barButtonItem key="leftBarButtonItem" systemItem="stop" id="vZG-zO-bn7">
@@ -229,6 +232,9 @@
                         <viewLayoutGuide key="safeArea" id="YOc-XI-ThF"/>
                     </view>
                     <navigationItem key="navigationItem" title="Add Location" id="ac2-Fs-cC7"/>
+                    <connections>
+                        <outlet property="mapView" destination="KWb-dd-1QE" id="b4h-NT-eN7"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lRZ-gO-WWT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
