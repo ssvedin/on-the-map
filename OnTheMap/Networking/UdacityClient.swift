@@ -19,8 +19,7 @@ class UdacityClient: NSObject {
     override init() {
         super.init()
     }
-
-    
+ 
     class func shared() -> UdacityClient {
         struct Singleton {
             static var shared = UdacityClient()
@@ -102,7 +101,7 @@ class UdacityClient: NSObject {
         request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName ?? "")\", \"lastName\": \"\(information.lastName ?? "")\",\"mapString\": \"\(information.mapString ?? ""))\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}".data(using: .utf8)
+        request.httpBody = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName )\", \"lastName\": \"\(information.lastName )\",\"mapString\": \"\(information.mapString ?? ""))\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}".data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
                 completion(false, error)

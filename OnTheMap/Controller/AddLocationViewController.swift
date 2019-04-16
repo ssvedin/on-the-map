@@ -8,7 +8,6 @@
 
 import UIKit
 import MapKit
-import CoreLocation
 
 class AddLocationViewController: UIViewController, UITextFieldDelegate {
     
@@ -33,16 +32,8 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         let newWebsite = websiteTextField.text
         
         geocodePosition(newLocation: newLocation ?? "")
-        //self.performSegue(withIdentifier: "finishAddLocation", sender: sender)
     }
-    /*
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "finishAddLocation" {
-            let controller = segue.destination as! FinishAddLocationViewController
-            self.navigationController?.pushViewController(controller, animated: true)
-        }
-    }
-    */
+    
     private func geocodePosition(newLocation: String) {
         CLGeocoder().geocodeAddressString(newLocation) { (newMarker, error) in
             if let error = error {
@@ -89,5 +80,5 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         }
         return StudentInformation(studentInfo)
     }
-    
+   
 }
