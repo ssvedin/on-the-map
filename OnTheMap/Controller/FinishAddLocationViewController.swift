@@ -40,10 +40,7 @@ class FinishAddLocationViewController: UIViewController {
             if studentLocation.locationId == nil {
                 UdacityClient.addStudentLocation(information: studentLocation) { (success, error) in
                     DispatchQueue.main.async {
-                        //self.dismiss(animated: true, completion: nil)
-                        //self.navigationController?.popToRootViewController(animated: true)
-                        let mapViewController = self.storyboard?.instantiateViewController(withIdentifier: "MapViewController") as! MapViewController
-                        self.navigationController?.popToViewController(mapViewController, animated: true)
+                        self.dismiss(animated: true, completion: nil)
                     }
                 }
             } else {
@@ -52,7 +49,6 @@ class FinishAddLocationViewController: UIViewController {
             }
         }
     }
-    
     
     private func showLocations(location: Location) {
         mapView.removeAnnotations(mapView.annotations)
