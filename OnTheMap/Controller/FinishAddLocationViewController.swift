@@ -34,10 +34,25 @@ class FinishAddLocationViewController: UIViewController {
             showLocations(location: studentLocation)
         }
     }
-  
-    @IBAction func cancelFinish(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
+    
+    @IBAction func finishAddLocation(_ sender: UIButton) {
+        if let studentLocation = studentInformation {
+            if studentLocation.locationId == nil {
+                UdacityClient.addStudentLocation(information: studentLocation) { (success, error) in
+                    DispatchQueue.main.async {
+                        //self.dismiss(animated: true, completion: nil)
+                        //self.navigationController?.popToRootViewController(animated: true)
+                        let mapViewController = self.storyboard?.instantiateViewController(withIdentifier: "MapViewController") as! MapViewController
+                        self.navigationController?.popToViewController(mapViewController, animated: true)
+                    }
+                }
+            } else {
+                // TODO: call PUT request here
+                print("Error adding location.")
+            }
+        }
     }
+    
     
     private func showLocations(location: Location) {
         mapView.removeAnnotations(mapView.annotations)
