@@ -75,6 +75,26 @@ class UdacityClient: NSObject {
         
     }
     
+    class func getLoggedInUserInfo(completion: @escaping (Bool, Error?) -> Void) {
+        var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation/\(Auth.key ?? "")")!)
+        request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                return
+            }
+            let decoder = JSONDecoder()
+            do {
+                let responseObject = try decoder.decode(StudentInformation.self, from: data)
+                Auth.key = responseObject.uniqueKey
+                completion(true, nil)
+            } catch {
+                completion(false, error)
+            }
+        }
+        task.resume()
+    }
+    
     class func getStudentsLocation(completion: @escaping ([StudentInformation]?, Error?) -> Void) {
         var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation")!)
         request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
@@ -101,7 +121,7 @@ class UdacityClient: NSObject {
         request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName )\", \"lastName\": \"\(information.lastName )\",\"mapString\": \"\(information.mapString ?? ""))\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}".data(using: .utf8)
+        request.httpBody = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString ?? "")\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}".data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
                 completion(false, error)
@@ -118,7 +138,34 @@ class UdacityClient: NSObject {
             } catch {
                  completion(false, error)
             }
-            
+        }
+        task.resume()
+    }
+    
+    class func updateStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void ) {
+        
+        var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation/\(information.locationId ?? "")")!)
+        request.httpMethod = "PUT"
+        request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString ?? "")\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}".data(using: .utf8)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                completion(false, error)
+                return
+            }
+            var response: UpdateLocationResponse!
+            let decoder = JSONDecoder()
+            do {
+                print(String(data: data, encoding: .utf8)!)
+                response = try decoder.decode(UpdateLocationResponse.self, from: data)
+                if let response = response, response.updatedAt != nil {
+                    completion(true, nil)
+                }
+            } catch {
+                completion(false, error)
+            }
         }
         task.resume()
     }

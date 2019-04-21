@@ -33,7 +33,7 @@ struct Location: Codable {
             }
         }
         if name.isEmpty {
-            name = "No name provided"
+            name = "FirstName LastName"
         }
         return name
     }

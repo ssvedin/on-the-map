@@ -42,10 +42,17 @@ class FinishAddLocationViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.dismiss(animated: true, completion: nil)
                     }
+                    // TODO: handle error
+                    print(error?.localizedDescription as Any)
                 }
             } else {
-                // TODO: call PUT request here
-                print("Error adding location.")
+                UdacityClient.updateStudentLocation(information: studentLocation) { (success, error) in
+                    DispatchQueue.main.async {
+                        self.dismiss(animated: true, completion: nil)
+                    }
+                    // TODO: handle error
+                    print(error?.localizedDescription as Any)
+                }
             }
         }
     }
