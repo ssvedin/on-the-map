@@ -61,14 +61,11 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     }
     
     private func buildStudentInfo(_ coordinate: CLLocationCoordinate2D) -> StudentInformation {
-        let nameComponents = UdacityClient.Auth.userName?.components(separatedBy: " ")
-        let firstName = nameComponents?.first ?? ""
-        let lastName = nameComponents?.last ?? ""
         
         var studentInfo = [
-            "uniqueKey": UdacityClient.Auth.key!,
-            "firstName": firstName,
-            "lastName": lastName,
+            "uniqueKey": UdacityClient.Auth.key as AnyObject,
+            "firstName": UdacityClient.Auth.firstName,
+            "lastName": UdacityClient.Auth.lastName,
             "mapString": locationTextField.text!,
             "mediaURL": websiteTextField.text!,
             "latitude": coordinate.latitude,

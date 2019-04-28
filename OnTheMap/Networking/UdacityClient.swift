@@ -12,8 +12,9 @@ class UdacityClient: NSObject {
     
     struct Auth {
         static var sessionId: String? = nil
-        static var key: String? = nil
-        static var userName: String? = nil
+        static var key = ""
+        static var firstName = ""
+        static var lastName = ""
     }
     
     override init() {
@@ -55,7 +56,31 @@ class UdacityClient: NSObject {
                 print(String(data: newData, encoding: .utf8)!)
                 let responseObject = try decoder.decode(LoginResponse.self, from: newData)
                 Auth.sessionId = responseObject.session?.id
-                Auth.key = responseObject.account?.key
+                Auth.key = (responseObject.account?.key)!
+                var profileURLString = URLRequest(url: URL(string: "https://onthemap-api.udacity.com/v1/users/\(responseObject.account!.key)")!)
+                profileURLString.httpMethod = "GET"
+                let task = URLSession.shared.dataTask(with: profileURLString) { data, response, error in
+                    if error != nil {
+                        return
+                    }
+                    let range = 5..<data!.count
+                    let newData = data?.subdata(in: range)
+                    print("printing profile")
+                    print(String(data: newData!, encoding: .utf8)!)
+                    
+                    guard let profileResponseData = newData else { exit(1) }
+                    print("Decoding Profile JSON")
+                    
+                    guard let profileObject = try? JSONDecoder().decode(UserProfile.self, from: profileResponseData) else {
+                        print("Failed to decode profile JSON")
+                        exit(1)
+                    }
+                    print("First Name : \(profileObject.firstName) && Last Name : \(profileObject.lastName) && Full Name: \(profileObject.nickname)")
+                    Auth.firstName = profileObject.firstName
+                    Auth.lastName = profileObject.lastName
+                    
+                }
+                task.resume()
                 completion(true, nil)
             } catch {
                 do {
@@ -73,26 +98,6 @@ class UdacityClient: NSObject {
         }
        task.resume()
         
-    }
-    
-    class func getLoggedInUserInfo(completion: @escaping (Bool, Error?) -> Void) {
-        var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation/\(Auth.key ?? "")")!)
-        request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
-        request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                return
-            }
-            let decoder = JSONDecoder()
-            do {
-                let responseObject = try decoder.decode(StudentInformation.self, from: data)
-                Auth.key = responseObject.uniqueKey
-                completion(true, nil)
-            } catch {
-                completion(false, error)
-            }
-        }
-        task.resume()
     }
     
     class func getStudentsLocation(completion: @escaping ([StudentInformation]?, Error?) -> Void) {
