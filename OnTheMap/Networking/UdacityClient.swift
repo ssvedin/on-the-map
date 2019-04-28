@@ -55,9 +55,9 @@ class UdacityClient: NSObject {
                 let newData = data.subdata(in: range) /* subset response data! */
                 print(String(data: newData, encoding: .utf8)!)
                 let responseObject = try decoder.decode(LoginResponse.self, from: newData)
-                Auth.sessionId = responseObject.session?.id
-                Auth.key = (responseObject.account?.key)!
-                var profileURLString = URLRequest(url: URL(string: "https://onthemap-api.udacity.com/v1/users/\(responseObject.account!.key)")!)
+                Auth.sessionId = responseObject.session.id
+                Auth.key = (responseObject.account.key)
+                var profileURLString = URLRequest(url: URL(string: "https://onthemap-api.udacity.com/v1/users/\(responseObject.account.key)")!)
                 profileURLString.httpMethod = "GET"
                 let task = URLSession.shared.dataTask(with: profileURLString) { data, response, error in
                     if error != nil {

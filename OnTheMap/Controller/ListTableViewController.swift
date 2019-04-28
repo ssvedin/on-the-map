@@ -25,6 +25,16 @@ class ListTableViewController: UITableViewController {
             }
         }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        UdacityClient.getStudentsLocation() {students, error in
+            self.students = students ?? []
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
 
     // MARK: - Table view data source
 
