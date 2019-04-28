@@ -9,7 +9,6 @@
 import Foundation
 
 struct StudentInformation: Codable {
-    let locationId: String?
     let createdAt: String?
     let firstName: String
     let lastName: String
@@ -22,7 +21,6 @@ struct StudentInformation: Codable {
     let updatedAt: String?
     
     init(_ dictionary: [String: AnyObject]) {
-        self.locationId = dictionary["objectId"] as? String
         self.createdAt = dictionary["createdAt"] as? String
         self.uniqueKey = dictionary["uniqueKey"] as? String ?? ""
         self.firstName = dictionary["firstName"] as? String ?? ""

@@ -20,16 +20,16 @@ class FinishAddLocationViewController: UIViewController {
 
         if let studentLocation = studentInformation {
             let studentLocation = Location(
-                objectId: "",
-                uniqueKey: nil,
+                objectId: studentLocation.objectId ?? "",
+                uniqueKey: studentLocation.uniqueKey,
                 firstName: studentLocation.firstName,
                 lastName: studentLocation.lastName,
                 mapString: studentLocation.mapString,
                 mediaURL: studentLocation.mediaURL,
                 latitude: studentLocation.latitude,
                 longitude: studentLocation.longitude,
-                createdAt: "",
-                updatedAt: ""
+                createdAt: studentLocation.createdAt ?? "",
+                updatedAt: studentLocation.updatedAt ?? ""
             )
             showLocations(location: studentLocation)
         }
@@ -37,7 +37,7 @@ class FinishAddLocationViewController: UIViewController {
     
     @IBAction func finishAddLocation(_ sender: UIButton) {
         if let studentLocation = studentInformation {
-            if studentLocation.locationId == nil {
+            if studentLocation.objectId == nil {
                 UdacityClient.addStudentLocation(information: studentLocation) { (success, error) in
                     DispatchQueue.main.async {
                         self.dismiss(animated: true, completion: nil)

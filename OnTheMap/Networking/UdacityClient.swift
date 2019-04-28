@@ -52,7 +52,7 @@ class UdacityClient: NSObject {
             let decoder = JSONDecoder()
             do {
                 let range = 5..<data.count
-                let newData = data.subdata(in: range) /* subset response data! */
+                let newData = data.subdata(in: range)
                 print(String(data: newData, encoding: .utf8)!)
                 let responseObject = try decoder.decode(LoginResponse.self, from: newData)
                 Auth.sessionId = responseObject.session.id
@@ -149,7 +149,7 @@ class UdacityClient: NSObject {
     
     class func updateStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void ) {
         
-        var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation/\(information.locationId ?? "")")!)
+        var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation/\(information.objectId ?? "")")!)
         request.httpMethod = "PUT"
         request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
