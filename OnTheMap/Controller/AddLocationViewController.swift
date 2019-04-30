@@ -15,7 +15,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var websiteTextField: UITextField!
     @IBOutlet weak var findLocationButton: UIButton!
     
-    var locationID: String?
+    var objectId: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,18 +63,21 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     private func buildStudentInfo(_ coordinate: CLLocationCoordinate2D) -> StudentInformation {
         
         var studentInfo = [
-            "uniqueKey": UdacityClient.Auth.key as AnyObject,
+            "uniqueKey": UdacityClient.Auth.key,
             "firstName": UdacityClient.Auth.firstName,
             "lastName": UdacityClient.Auth.lastName,
             "mapString": locationTextField.text!,
             "mediaURL": websiteTextField.text!,
             "latitude": coordinate.latitude,
             "longitude": coordinate.longitude,
+            "objectId": UdacityClient.Auth.objectId
             ] as [String: AnyObject]
         
-        if let locationID = locationID {
-            studentInfo["objectId"] = locationID as AnyObject
+        if let objectId = objectId {
+            studentInfo["objectId"] = objectId as AnyObject
+            print(objectId)
         }
+
         return StudentInformation(studentInfo)
     }
    

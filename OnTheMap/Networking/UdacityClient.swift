@@ -15,6 +15,7 @@ class UdacityClient: NSObject {
         static var key = ""
         static var firstName = ""
         static var lastName = ""
+        static var objectId = ""
     }
     
     override init() {
@@ -138,6 +139,7 @@ class UdacityClient: NSObject {
                 print(String(data: data, encoding: .utf8)!)
                 response = try decoder.decode(PostLocationResponse.self, from: data)
                 if let response = response, response.createdAt != nil {
+                    Auth.objectId = response.objectId ?? ""
                     completion(true, nil)
                 }
             } catch {
