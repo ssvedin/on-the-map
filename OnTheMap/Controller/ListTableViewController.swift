@@ -53,4 +53,11 @@ class ListTableViewController: UITableViewController {
         cell.detailTextLabel?.text = "\(student.mediaURL ?? "")"
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let student = students[indexPath.row]
+        UIApplication.shared.open(URL(string: student.mediaURL ?? "")!, options: [:], completionHandler: nil)
+    }
+    
+    
 }
