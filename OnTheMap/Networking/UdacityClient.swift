@@ -102,6 +102,26 @@ class UdacityClient: NSObject {
         
     }
     
+    class func getLoggedInUserInfo(completion: @escaping (Bool, Error?) -> Void) {
+        var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation?where=%7B%22uniqueKey%22%3A%22\(Auth.key)%22%7D")!)
+        request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                return
+            }
+            let decoder = JSONDecoder()
+            do {
+                let responseObject = try decoder.decode(StudentInformation.self, from: data)
+                Auth.objectId = responseObject.objectId ?? ""
+                completion(true, nil)
+            } catch {
+                completion(false, error)
+            }
+        }
+        task.resume()
+    }
+    
     class func logout(completion: @escaping () -> Void) {
         var request = URLRequest(url: URL(string: "https://onthemap-api.udacity.com/v1/session")!)
         request.httpMethod = "DELETE"
@@ -149,12 +169,18 @@ class UdacityClient: NSObject {
     }
     
     class func addStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
+        
+        getLoggedInUserInfo { (true, error) in
+            print("Logged in user's objectID: \(Auth.objectId)")
+        }
+        
         var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation")!)
         request.httpMethod = "POST"
         request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString ?? "")\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}".data(using: .utf8)
+
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
                 completion(false, error)
@@ -166,7 +192,6 @@ class UdacityClient: NSObject {
                 print(String(data: data, encoding: .utf8)!)
                 response = try decoder.decode(PostLocationResponse.self, from: data)
                 if let response = response, response.createdAt != nil {
-                    Auth.objectId = response.objectId ?? ""
                     completion(true, nil)
                 }
             } catch {
@@ -178,12 +203,17 @@ class UdacityClient: NSObject {
     
     class func updateStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void ) {
         
+        getLoggedInUserInfo { (true, error) in
+            print("Logged in user's objectID: \(Auth.objectId)")
+        }
+        
         var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation/\(information.objectId ?? "")")!)
         request.httpMethod = "PUT"
         request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString ?? "")\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}".data(using: .utf8)
+
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
                 completion(false, error)
