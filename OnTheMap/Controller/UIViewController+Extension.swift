@@ -11,7 +11,11 @@ import UIKit
 extension UIViewController {
     
     @IBAction func logout(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
+        UdacityClient.logout {
+            DispatchQueue.main.async {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
     }
     
     @IBAction func addLocation(sender: UIBarButtonItem) {

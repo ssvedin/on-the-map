@@ -58,6 +58,7 @@ class UdacityClient: NSObject {
                 let responseObject = try decoder.decode(LoginResponse.self, from: newData)
                 Auth.sessionId = responseObject.session.id
                 Auth.key = (responseObject.account.key)
+                print("Logged in. sessionId: \(String(describing: Auth.sessionId))")
                 var profileURLString = URLRequest(url: URL(string: "https://onthemap-api.udacity.com/v1/users/\(responseObject.account.key)")!)
                 profileURLString.httpMethod = "GET"
                 let task = URLSession.shared.dataTask(with: profileURLString) { data, response, error in
@@ -99,6 +100,32 @@ class UdacityClient: NSObject {
         }
        task.resume()
         
+    }
+    
+    class func logout(completion: @escaping () -> Void) {
+        var request = URLRequest(url: URL(string: "https://onthemap-api.udacity.com/v1/session")!)
+        request.httpMethod = "DELETE"
+        var xsrfCookie: HTTPCookie? = nil
+        let sharedCookieStorage = HTTPCookieStorage.shared
+        for cookie in sharedCookieStorage.cookies! {
+            if cookie.name == "XSRF-TOKEN" { xsrfCookie = cookie }
+        }
+        if let xsrfCookie = xsrfCookie {
+            request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
+        }
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if error != nil {
+                print("Error logging out.")
+                return
+            }
+            let range = 5..<data!.count
+            let newData = data?.subdata(in: range)
+            print(String(data: newData!, encoding: .utf8)!)
+            Auth.sessionId = ""
+            print("Logging out. sessionId: \(String(describing: Auth.sessionId))")
+            completion()
+        }
+        task.resume()
     }
     
     class func getStudentsLocation(completion: @escaping ([StudentInformation]?, Error?) -> Void) {
