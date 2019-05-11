@@ -70,7 +70,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
             "mediaURL": websiteTextField.text!,
             "latitude": coordinate.latitude,
             "longitude": coordinate.longitude,
-            "objectId": UdacityClient.Auth.objectId
+            //"objectId": UdacityClient.Auth.objectId
             ] as [String: AnyObject]
         
         if let objectId = objectId {

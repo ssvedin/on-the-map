@@ -114,6 +114,7 @@ class UdacityClient: NSObject {
             do {
                 let responseObject = try decoder.decode(StudentInformation.self, from: data)
                 Auth.objectId = responseObject.objectId ?? ""
+                print("objectId from getLoggedInUserInfo: \(Auth.objectId)")
                 completion(true, nil)
             } catch {
                 completion(false, error)
@@ -171,7 +172,7 @@ class UdacityClient: NSObject {
     class func addStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
         
         getLoggedInUserInfo { (true, error) in
-            print("Logged in user's objectID: \(Auth.objectId)")
+            print("Logged in user's objectID from POST: \(Auth.objectId)")
         }
         
         var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation")!)
@@ -204,7 +205,7 @@ class UdacityClient: NSObject {
     class func updateStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void ) {
         
         getLoggedInUserInfo { (true, error) in
-            print("Logged in user's objectID: \(Auth.objectId)")
+            print("Logged in user's objectID from PUT: \(Auth.objectId)")
         }
         
         var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation/\(information.objectId ?? "")")!)
