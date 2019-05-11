@@ -31,7 +31,7 @@ class UdacityClient: NSObject {
     
     class func login(email: String, password: String, completion: @escaping (Bool, Error?) -> Void) {
         
-        var request = URLRequest(url: URL(string: "https://onthemap-api.udacity.com/v1/session")!)
+        var request = URLRequest(url: URL(string: Constants.Udacity.udacityBaseURL + "/session")!)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -59,7 +59,7 @@ class UdacityClient: NSObject {
                 Auth.sessionId = responseObject.session.id
                 Auth.key = (responseObject.account.key)
                 print("Logged in. sessionId: \(String(describing: Auth.sessionId))")
-                var profileURLString = URLRequest(url: URL(string: "https://onthemap-api.udacity.com/v1/users/\(responseObject.account.key)")!)
+                var profileURLString = URLRequest(url: URL(string: Constants.Udacity.udacityBaseURL + "/users/\(responseObject.account.key)")!)
                 profileURLString.httpMethod = "GET"
                 let task = URLSession.shared.dataTask(with: profileURLString) { data, response, error in
                     if error != nil {
@@ -103,7 +103,7 @@ class UdacityClient: NSObject {
     }
     
     class func getLoggedInUserInfo(completion: @escaping (Bool, Error?) -> Void) {
-        var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation?where=%7B%22uniqueKey%22%3A%22\(Auth.key)%22%7D")!)
+        var request = URLRequest(url: URL(string: Constants.Parse.parseBaseURL + "?where=%7B%22uniqueKey%22%3A%22\(Auth.key)%22%7D")!)
         request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -124,7 +124,7 @@ class UdacityClient: NSObject {
     }
     
     class func logout(completion: @escaping () -> Void) {
-        var request = URLRequest(url: URL(string: "https://onthemap-api.udacity.com/v1/session")!)
+        var request = URLRequest(url: URL(string: Constants.Udacity.udacityBaseURL + "/session")!)
         request.httpMethod = "DELETE"
         var xsrfCookie: HTTPCookie? = nil
         let sharedCookieStorage = HTTPCookieStorage.shared
@@ -150,7 +150,7 @@ class UdacityClient: NSObject {
     }
     
     class func getStudentsLocation(completion: @escaping ([StudentInformation]?, Error?) -> Void) {
-        var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation")!)
+        var request = URLRequest(url: URL(string: Constants.Parse.parseBaseURL)!)
         request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         let task = URLSession.shared.dataTask(with: request) { data, response, error  in
@@ -175,7 +175,7 @@ class UdacityClient: NSObject {
             print("Logged in user's objectID from POST: \(Auth.objectId)")
         }
         
-        var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation")!)
+        var request = URLRequest(url: URL(string: Constants.Parse.parseBaseURL)!)
         request.httpMethod = "POST"
         request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
@@ -208,7 +208,7 @@ class UdacityClient: NSObject {
             print("Logged in user's objectID from PUT: \(Auth.objectId)")
         }
         
-        var request = URLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation/\(information.objectId ?? "")")!)
+        var request = URLRequest(url: URL(string: Constants.Parse.parseBaseURL + "\(information.objectId ?? "")")!)
         request.httpMethod = "PUT"
         request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
