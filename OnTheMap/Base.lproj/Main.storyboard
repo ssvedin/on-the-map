@@ -340,7 +340,7 @@
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aGb-U3-Y1p">
                                 <rect key="frame" x="35" y="321" width="309" height="45"/>
-                                <color key="backgroundColor" red="0.039863084038216923" green="0.72926415007598977" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.039863084040000003" green="0.72926415010000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="MHs-TR-maA"/>
                                 </constraints>

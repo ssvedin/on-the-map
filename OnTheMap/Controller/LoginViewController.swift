@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
@@ -21,6 +21,9 @@ class LoginViewController: UIViewController {
 
         emailField.text = ""
         passwordField.text = ""
+        emailField.delegate = self
+        passwordField.delegate = self
+        loginButtonEnabled(false)
     }
     
     @IBAction func login(_ sender: UIButton) {
@@ -47,6 +50,25 @@ class LoginViewController: UIViewController {
         alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         show(alertVC, sender: nil)
     }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if (emailField.text?.isEmpty)! && (passwordField.text?.isEmpty)! {
+            loginButtonEnabled(false)
+        } else {
+            loginButtonEnabled(true)
+        }
+    }
+    
+    func loginButtonEnabled(_ enabled: Bool) {
+        if enabled {
+            loginButton.isEnabled = true
+            loginButton.alpha = 1.0
+        } else {
+            loginButton.isEnabled = false
+            loginButton.alpha = 0.5
+        }
+    }
+    
 }
 
 
