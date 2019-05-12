@@ -12,6 +12,7 @@ class ListTableViewController: UITableViewController {
     
     
     @IBOutlet weak var studentTableView: UITableView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var students = [StudentInformation]()
 
@@ -22,6 +23,7 @@ class ListTableViewController: UITableViewController {
             self.students = students ?? []
             DispatchQueue.main.async {
                 self.tableView.reloadData()
+                self.activityIndicator.startAnimating()
             }
         }
     }
@@ -32,6 +34,7 @@ class ListTableViewController: UITableViewController {
             self.students = students ?? []
             DispatchQueue.main.async {
                 self.tableView.reloadData()
+                self.activityIndicator.startAnimating()
             }
         }
     }
@@ -58,6 +61,5 @@ class ListTableViewController: UITableViewController {
         let student = students[indexPath.row]
         UIApplication.shared.open(URL(string: student.mediaURL ?? "")!, options: [:], completionHandler: nil)
     }
-    
     
 }
