@@ -18,5 +18,6 @@ struct Constants {
     
     struct Udacity {
         static let udacityBaseURL = "https://onthemap-api.udacity.com/v1"
+        static let udacitySignUpURL = "https://auth.udacity.com/sign-up"
     }
 }

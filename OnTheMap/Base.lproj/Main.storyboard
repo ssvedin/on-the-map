@@ -365,6 +365,9 @@
                                     <action selector="signUp:" destination="Wwh-3a-SJn" eventType="touchUpInside" id="nWc-wa-bHY"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="IHT-bu-7Em">
+                                <rect key="frame" x="179" y="436" width="21" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -372,10 +375,12 @@
                             <constraint firstItem="aGb-U3-Y1p" firstAttribute="top" secondItem="mYf-Xc-IFZ" secondAttribute="bottom" constant="8" symbolic="YES" id="7qV-5p-2N1"/>
                             <constraint firstItem="mYf-Xc-IFZ" firstAttribute="top" secondItem="8Pu-gh-b4V" secondAttribute="bottom" constant="8" symbolic="YES" id="9Nv-Ef-bdm"/>
                             <constraint firstItem="1ea-hP-uCk" firstAttribute="leading" secondItem="zjk-Im-swW" secondAttribute="leading" constant="35" id="AUf-pd-449"/>
+                            <constraint firstItem="IHT-bu-7Em" firstAttribute="top" secondItem="LKw-Ba-DtA" secondAttribute="bottom" constant="8" id="BgQ-Wl-KGd"/>
                             <constraint firstItem="8Pu-gh-b4V" firstAttribute="top" secondItem="ggt-W6-5yc" secondAttribute="bottom" constant="50" id="BqL-xz-0vF">
                                 <variation key="heightClass=compact-widthClass=compact" constant="10"/>
                             </constraint>
                             <constraint firstItem="ggt-W6-5yc" firstAttribute="top" secondItem="zjk-Im-swW" secondAttribute="top" constant="40" id="FcY-8h-yBP"/>
+                            <constraint firstItem="IHT-bu-7Em" firstAttribute="leading" secondItem="zjk-Im-swW" secondAttribute="leading" constant="179" id="FeR-nU-LuO"/>
                             <constraint firstItem="zjk-Im-swW" firstAttribute="trailing" secondItem="mYf-Xc-IFZ" secondAttribute="trailing" constant="16" id="Fhs-pw-AWC"/>
                             <constraint firstItem="ggt-W6-5yc" firstAttribute="centerX" secondItem="zjk-Im-swW" secondAttribute="centerX" id="HCW-Gw-Fpt"/>
                             <constraint firstItem="aGb-U3-Y1p" firstAttribute="centerY" secondItem="zjk-Im-swW" secondAttribute="centerY" id="HQW-SH-sDz"/>
@@ -384,6 +389,7 @@
                             <constraint firstItem="zjk-Im-swW" firstAttribute="trailing" secondItem="1ea-hP-uCk" secondAttribute="trailing" constant="31" id="JR0-Jz-KBB"/>
                             <constraint firstItem="ggt-W6-5yc" firstAttribute="top" secondItem="zjk-Im-swW" secondAttribute="top" constant="41" id="Kn4-lL-wSM"/>
                             <constraint firstItem="LKw-Ba-DtA" firstAttribute="centerX" secondItem="zjk-Im-swW" secondAttribute="centerX" id="Kxf-FL-uSp"/>
+                            <constraint firstItem="IHT-bu-7Em" firstAttribute="centerX" secondItem="1ea-hP-uCk" secondAttribute="centerX" id="LWg-ya-mfe"/>
                             <constraint firstItem="zjk-Im-swW" firstAttribute="bottom" secondItem="aGb-U3-Y1p" secondAttribute="bottom" constant="110" id="MQt-ij-52h"/>
                             <constraint firstItem="8Pu-gh-b4V" firstAttribute="leading" secondItem="zjk-Im-swW" secondAttribute="leading" constant="35" id="Psv-p9-lyR"/>
                             <constraint firstItem="zjk-Im-swW" firstAttribute="trailing" secondItem="8Pu-gh-b4V" secondAttribute="trailing" constant="31" id="VSC-sX-TiS">
@@ -450,9 +456,11 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="IHT-bu-7Em" id="mKh-iF-a1e"/>
                         <outlet property="emailField" destination="8Pu-gh-b4V" id="A5t-py-bsS"/>
                         <outlet property="loginButton" destination="aGb-U3-Y1p" id="fgC-7K-RWI"/>
                         <outlet property="passwordField" destination="mYf-Xc-IFZ" id="3ZF-uR-Yzc"/>
+                        <outlet property="signUpButton" destination="LKw-Ba-DtA" id="eSB-eN-oMw"/>
                         <segue destination="49e-Tb-3d3" kind="show" identifier="login" id="8De-1q-2vE"/>
                     </connections>
                 </viewController>
