@@ -21,5 +21,15 @@ extension UIViewController {
     @IBAction func addLocation(sender: UIBarButtonItem) {
         performSegue(withIdentifier: "addLocation", sender: sender)
     }
+    
+    func buttonEnabled(_ enabled: Bool, button: UIButton) {
+        if enabled {
+            button.isEnabled = true
+            button.alpha = 1.0
+        } else {
+            button.isEnabled = false
+            button.alpha = 0.5
+        }
+    }
 
 }

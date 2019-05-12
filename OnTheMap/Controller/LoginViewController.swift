@@ -28,13 +28,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         passwordField.text = ""
         emailField.delegate = self
         passwordField.delegate = self
-        loginButtonEnabled(false)
+        buttonEnabled(false, button: loginButton)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         emailField.text = ""
         passwordField.text = ""
-        setLoggingIn(false)
+        //setLoggingIn(false)
     }
     
     // MARK: Log In
@@ -61,28 +61,26 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             }
         } else {
             showLoginError(message: error?.localizedDescription ?? "")
-            print("Login error.")
         }
     }
     
-    // MARK: Log In button state
+    // MARK: Button and text field behavior
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if (emailField.text?.isEmpty)! && (passwordField.text?.isEmpty)! {
-            loginButtonEnabled(false)
-        } else {
-            loginButtonEnabled(true)
+            buttonEnabled(false, button: loginButton)
+        } else if !(emailField.text?.isEmpty)! && !(passwordField.text?.isEmpty)! {
+            buttonEnabled(true, button: loginButton)
         }
     }
     
-    func loginButtonEnabled(_ enabled: Bool) {
-        if enabled {
-            loginButton.isEnabled = true
-            loginButton.alpha = 1.0
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
         } else {
-            loginButton.isEnabled = false
-            loginButton.alpha = 0.5
+            textField.resignFirstResponder()
         }
+        return false
     }
     
     // MARK: Loading state
@@ -101,7 +99,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             self.emailField.isEnabled = !loggingIn
             self.passwordField.isEnabled = !loggingIn
             self.loginButton.isEnabled = !loggingIn
-            self.loginButtonEnabled(false)
+            self.buttonEnabled(false, button: self.loginButton)
             self.signUpButton.isEnabled = !loggingIn
         }
     }

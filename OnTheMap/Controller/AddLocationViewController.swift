@@ -21,6 +21,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         locationTextField.delegate = self
         websiteTextField.delegate = self
+        buttonEnabled(false, button: findLocationButton)
     }
     
     @IBAction func cancelAddLocation(_ sender: UIBarButtonItem) {
@@ -79,6 +80,25 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         }
 
         return StudentInformation(studentInfo)
+    }
+    
+     // MARK: Button and text field behavior
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if (locationTextField.text?.isEmpty)! && (websiteTextField.text?.isEmpty)! {
+            buttonEnabled(false, button: findLocationButton)
+        } else if !(locationTextField.text?.isEmpty)! && !(websiteTextField.text?.isEmpty)! {
+            buttonEnabled(true, button: findLocationButton)
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        return false
     }
    
 }
