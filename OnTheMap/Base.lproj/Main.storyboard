@@ -41,11 +41,16 @@
                                     <outlet property="delegate" destination="9pv-A4-QxB" id="jeX-dg-EsW"/>
                                 </connections>
                             </mapView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="oDv-1e-vPH">
+                                <rect key="frame" x="177.5" y="323" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="oDv-1e-vPH" firstAttribute="centerY" secondItem="PQr-Ze-W5v" secondAttribute="centerY" constant="-8" id="KK3-mb-Cga"/>
                             <constraint firstItem="it6-yw-hgt" firstAttribute="bottom" secondItem="PQr-Ze-W5v" secondAttribute="bottom" id="Ovj-qG-QiX"/>
                             <constraint firstItem="it6-yw-hgt" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" id="Rka-K8-oqK"/>
+                            <constraint firstItem="oDv-1e-vPH" firstAttribute="centerX" secondItem="PQr-Ze-W5v" secondAttribute="centerX" id="VDS-Qz-aPZ"/>
                             <constraint firstItem="it6-yw-hgt" firstAttribute="trailing" secondItem="PQr-Ze-W5v" secondAttribute="trailing" id="YZ9-1i-qxl"/>
                             <constraint firstItem="it6-yw-hgt" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" id="g3w-8l-zXU"/>
                         </constraints>
@@ -69,6 +74,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="oDv-1e-vPH" id="yTT-0S-krk"/>
                         <outlet property="mapView" destination="it6-yw-hgt" id="Kgg-HV-5UY"/>
                     </connections>
                 </viewController>
@@ -521,6 +527,6 @@
         <image name="logo-u" width="62" height="62"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ihN-bL-qAo"/>
+        <segue reference="dX2-BA-g5i"/>
     </inferredMetricsTieBreakers>
 </document>

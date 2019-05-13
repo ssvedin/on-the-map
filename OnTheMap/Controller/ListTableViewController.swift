@@ -10,26 +10,28 @@ import UIKit
 
 class ListTableViewController: UITableViewController {
     
+    // MARK: Outlets and Properties
     
     @IBOutlet weak var studentTableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var students = [StudentInformation]()
+    
+    // MARK: Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        UdacityClient.getStudentsLocation() {students, error in
-            self.students = students ?? []
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-                self.activityIndicator.startAnimating()
-            }
-        }
+        getStudentsList()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
+        getStudentsList()
+    }
+    
+    // MARK: Get list of students
+    
+    func getStudentsList() {
         UdacityClient.getStudentsLocation() {students, error in
             self.students = students ?? []
             DispatchQueue.main.async {

@@ -10,6 +10,8 @@ import UIKit
 
 extension UIViewController {
     
+    // MARK: Log Out
+    
     @IBAction func logout(_ sender: UIBarButtonItem) {
         UdacityClient.logout {
             DispatchQueue.main.async {
@@ -18,9 +20,13 @@ extension UIViewController {
         }
     }
     
+    // MARK: Add Location
+    
     @IBAction func addLocation(sender: UIBarButtonItem) {
         performSegue(withIdentifier: "addLocation", sender: sender)
     }
+    
+    // MARK: Enabled and disabled states for buttons
     
     func buttonEnabled(_ enabled: Bool, button: UIButton) {
         if enabled {

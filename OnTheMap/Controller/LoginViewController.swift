@@ -10,7 +10,7 @@ import UIKit
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
 
-    // MARK: Properties and Outlets
+    // MARK: Outlets and Properties
     
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
@@ -34,7 +34,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         emailField.text = ""
         passwordField.text = ""
-        //setLoggingIn(false)
     }
     
     // MARK: Log In
@@ -65,7 +64,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: Button and text field behavior
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         if (emailField.text?.isEmpty)! && (passwordField.text?.isEmpty)! {
             buttonEnabled(false, button: loginButton)
