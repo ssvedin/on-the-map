@@ -33,6 +33,13 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         getStudentsPins()
     }
     
+    // MARK: Refresh map
+    
+    @IBAction func refreshMap(_ sender: UIBarButtonItem) {
+        self.activityIndicator.startAnimating()
+        getStudentsPins()
+    }
+    
     // MARK: Add map annotations
     
     func getStudentsPins() {

@@ -70,7 +70,11 @@
                                     <segue destination="7bK-l8-r88" kind="presentation" identifier="addLocation" id="dX2-BA-g5i"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="Item" image="icon_refresh" id="BHr-2Y-o3z"/>
+                            <barButtonItem title="Item" image="icon_refresh" id="BHr-2Y-o3z" userLabel="Refresh Map">
+                                <connections>
+                                    <action selector="refreshMap:" destination="9pv-A4-QxB" id="Dn2-cI-CLr"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
@@ -284,12 +288,16 @@
                                     <segue destination="7bK-l8-r88" kind="presentation" identifier="addLocation" id="ihN-bL-qAo"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="icon_refresh" id="G8R-Ua-fSO"/>
+                            <barButtonItem image="icon_refresh" id="G8R-Ua-fSO" userLabel="Refresh List">
+                                <connections>
+                                    <action selector="refreshList:" destination="pSN-bU-5uj" id="ID4-nf-bzr"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="Zx7-E5-4OT" id="loZ-S0-uPD"/>
+                        <outlet property="activityIndicator" destination="Zx7-E5-4OT" id="c7g-1u-o4t"/>
                         <outlet property="studentTableView" destination="qje-sF-b6R" id="BdQ-Az-uRP"/>
                     </connections>
                 </tableViewController>
@@ -527,6 +535,6 @@
         <image name="logo-u" width="62" height="62"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="dX2-BA-g5i"/>
+        <segue reference="ihN-bL-qAo"/>
     </inferredMetricsTieBreakers>
 </document>

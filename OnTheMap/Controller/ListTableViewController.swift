@@ -21,11 +21,23 @@ class ListTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        myIndicator.isHidden = true
+        myIndicator.hidesWhenStopped = true
+        showActivityIndicator()
         getStudentsList()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
+        showActivityIndicator()
+        getStudentsList()
+    }
+    
+    // MARK: Refresh list
+    
+    @IBAction func refreshList(_ sender: UIBarButtonItem) {
+        // self.activityIndicator.startAnimating()
+        showActivityIndicator()
         getStudentsList()
     }
     
@@ -35,13 +47,32 @@ class ListTableViewController: UITableViewController {
         UdacityClient.getStudentsLocation() {students, error in
             self.students = students ?? []
             DispatchQueue.main.async {
+                self.hideActivityIndicator()
                 self.tableView.reloadData()
-                self.activityIndicator.startAnimating()
             }
         }
     }
+    
+    // MARK: Activity Indicator
+    
+    var myIndicator: UIActivityIndicatorView {
+        let myIndicator:UIActivityIndicatorView = UIActivityIndicatorView (style: UIActivityIndicatorView.Style.gray)
+        self.view.addSubview(myIndicator)
+        myIndicator.bringSubviewToFront(self.view)
+        myIndicator.center = self.view.center
+        return myIndicator
+    }
+    
+    func showActivityIndicator() {
+        myIndicator.isHidden = false
+        myIndicator.startAnimating()
+    }
+    
+    func hideActivityIndicator() {
+        myIndicator.stopAnimating()
+    }
 
-    // MARK: - Table view data source
+    // MARK: Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
