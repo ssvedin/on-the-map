@@ -11,6 +11,8 @@ import MapKit
 
 class AddLocationViewController: UIViewController, UITextFieldDelegate {
     
+    // MARK: Outlets and properties
+    
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var websiteTextField: UITextField!
     @IBOutlet weak var findLocationButton: UIButton!
@@ -21,6 +23,8 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     var locationTextFieldIsEmpty = true
     var websiteTextFieldIsEmpty = true
     
+    // MARK: Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         locationTextField.delegate = self
@@ -28,17 +32,27 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         buttonEnabled(false, button: findLocationButton)
     }
     
+    // MARK: Cancel out of adding location
+    
     @IBAction func cancelAddLocation(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
     
+    // MARK: Find location
+    
     @IBAction func findLocation(sender: UIButton) {
         self.setLoading(true)
         let newLocation = locationTextField.text
-        let newWebsite = websiteTextField.text
         
+        guard let url = URL(string: self.websiteTextField.text!), UIApplication.shared.canOpenURL(url) else {
+            self.showAlert(message: "Please include 'https://' in your link.", title: "Invalid URL")
+            return
+        }
+
         geocodePosition(newLocation: newLocation ?? "")
     }
+    
+    // MARK: Geocode position
     
     private func geocodePosition(newLocation: String) {
         //self.activityIndicator.startAnimating()
@@ -62,11 +76,15 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    // MARK: Push to Final Add Location screen
+    
     private func loadNewLocation(_ coordinate: CLLocationCoordinate2D) {
         let controller = storyboard?.instantiateViewController(withIdentifier: "FinishAddLocationViewController") as! FinishAddLocationViewController
         controller.studentInformation = buildStudentInfo(coordinate)
         self.navigationController?.pushViewController(controller, animated: true)
     }
+    
+    // MARK: Student info to display on Final Add Location screen
     
     private func buildStudentInfo(_ coordinate: CLLocationCoordinate2D) -> StudentInformation {
         
@@ -78,7 +96,6 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
             "mediaURL": websiteTextField.text!,
             "latitude": coordinate.latitude,
             "longitude": coordinate.longitude,
-            //"objectId": UdacityClient.Auth.objectId
             ] as [String: AnyObject]
         
         if let objectId = objectId {
@@ -87,7 +104,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         }
 
         return StudentInformation(studentInfo)
-    
+
     }
     
     // MARK: Loading state

@@ -37,5 +37,11 @@ extension UIViewController {
             button.alpha = 0.5
         }
     }
+    
+    func showAlert(message: String, title: String) {
+        let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        show(alertVC, sender: nil)
+    }
 
 }

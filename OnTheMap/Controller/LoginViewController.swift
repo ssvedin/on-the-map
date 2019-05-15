@@ -62,7 +62,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 self.performSegue(withIdentifier: "login", sender: nil)
             }
         } else {
-            showLoginError(message: error?.localizedDescription ?? "")
+            showAlert(message: error?.localizedDescription ?? "", title: "Login Error")
         }
     }
     
@@ -144,14 +144,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             self.buttonEnabled(false, button: self.loginButton)
             self.signUpButton.isEnabled = !loggingIn
         }
-    }
-    
-    // MARK: Login Error alert
-    
-    func showLoginError(message: String) {
-        let alertVC = UIAlertController(title: "Login Error", message: message, preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        show(alertVC, sender: nil)
     }
     
 }
