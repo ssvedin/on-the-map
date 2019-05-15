@@ -18,6 +18,9 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     
     var objectId: String?
     
+    var locationTextFieldIsEmpty = true
+    var websiteTextFieldIsEmpty = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         locationTextField.delegate = self
@@ -109,12 +112,51 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     
      // MARK: Button and text field behavior
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if (locationTextField.text?.isEmpty)! && (websiteTextField.text?.isEmpty)! {
-            buttonEnabled(false, button: findLocationButton)
-        } else if !(locationTextField.text?.isEmpty)! && !(websiteTextField.text?.isEmpty)! {
-            buttonEnabled(true, button: findLocationButton)
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == locationTextField {
+            let currenText = locationTextField.text ?? ""
+            guard let stringRange = Range(range, in: currenText) else { return false }
+            let updatedText = currenText.replacingCharacters(in: stringRange, with: string)
+            
+            if updatedText.isEmpty && updatedText == "" {
+                locationTextFieldIsEmpty = true
+            } else {
+                locationTextFieldIsEmpty = false
+            }
         }
+        
+        if textField == websiteTextField {
+            let currenText = websiteTextField.text ?? ""
+            guard let stringRange = Range(range, in: currenText) else { return false }
+            let updatedText = currenText.replacingCharacters(in: stringRange, with: string)
+            
+            if updatedText.isEmpty && updatedText == "" {
+                websiteTextFieldIsEmpty = true
+            } else {
+                websiteTextFieldIsEmpty = false
+            }
+        }
+        
+        if locationTextFieldIsEmpty == false && websiteTextFieldIsEmpty == false {
+            buttonEnabled(true, button: findLocationButton)
+        } else {
+            buttonEnabled(false, button: findLocationButton)
+        }
+        
+        return true
+        
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        buttonEnabled(false, button: findLocationButton)
+        if textField == locationTextField {
+            locationTextFieldIsEmpty = true
+        }
+        if textField == websiteTextField {
+            websiteTextFieldIsEmpty = true
+        }
+        
+        return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -122,8 +164,10 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
             nextField.becomeFirstResponder()
         } else {
             textField.resignFirstResponder()
+            findLocation(sender: findLocationButton)
+            
         }
-        return false
+        return true
     }
    
 }

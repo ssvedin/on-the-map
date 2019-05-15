@@ -20,6 +20,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     let signUpUrl = URL(string: Constants.Udacity.udacitySignUpURL)!
     
+    var emailFieldIsEmpty = true
+    var passwordFieldIsEmpty = true
+    
     // MARK: Life Cycle
     
     override func viewDidLoad() {
@@ -64,13 +67,52 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: Button and text field behavior
-
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if (emailField.text?.isEmpty)! && (passwordField.text?.isEmpty)! {
-            buttonEnabled(false, button: loginButton)
-        } else if !(emailField.text?.isEmpty)! && !(passwordField.text?.isEmpty)! {
-            buttonEnabled(true, button: loginButton)
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == emailField {
+            let currenText = emailField.text ?? ""
+            guard let stringRange = Range(range, in: currenText) else { return false }
+            let updatedText = currenText.replacingCharacters(in: stringRange, with: string)
+            
+            if updatedText.isEmpty && updatedText == "" {
+                emailFieldIsEmpty = true
+            } else {
+                emailFieldIsEmpty = false
+            }
         }
+        
+        if textField == passwordField {
+            let currenText = passwordField.text ?? ""
+            guard let stringRange = Range(range, in: currenText) else { return false }
+            let updatedText = currenText.replacingCharacters(in: stringRange, with: string)
+            
+            if updatedText.isEmpty && updatedText == "" {
+                passwordFieldIsEmpty = true
+            } else {
+                passwordFieldIsEmpty = false
+            }
+        }
+        
+        if emailFieldIsEmpty == false && passwordFieldIsEmpty == false {
+            buttonEnabled(true, button: loginButton)
+        } else {
+            buttonEnabled(false, button: loginButton)
+        }
+        
+        return true
+        
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        buttonEnabled(false, button: loginButton)
+        if textField == emailField {
+            emailFieldIsEmpty = true
+        }
+        if textField == passwordField {
+            passwordFieldIsEmpty = true
+        }
+        
+        return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -78,8 +120,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             nextField.becomeFirstResponder()
         } else {
             textField.resignFirstResponder()
+            login(loginButton)
         }
-        return false
+        return true
     }
     
     // MARK: Loading state
