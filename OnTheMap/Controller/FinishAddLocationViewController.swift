@@ -12,6 +12,9 @@ import MapKit
 class FinishAddLocationViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var finishAddLocationButton: UIButton!
+    
     
     var studentInformation: StudentInformation?
     
@@ -36,10 +39,12 @@ class FinishAddLocationViewController: UIViewController {
     }
     
     @IBAction func finishAddLocation(_ sender: UIButton) {
+        self.setLoading(true)
         if let studentLocation = studentInformation {
             if studentLocation.objectId == nil {
                 UdacityClient.addStudentLocation(information: studentLocation) { (success, error) in
                     DispatchQueue.main.async {
+                        self.setLoading(false)
                         self.dismiss(animated: true, completion: nil)
                     }
                     // TODO: handle error
@@ -48,6 +53,7 @@ class FinishAddLocationViewController: UIViewController {
             } else {
                 UdacityClient.updateStudentLocation(information: studentLocation) { (success, error) in
                     DispatchQueue.main.async {
+                        self.setLoading(false)
                         self.dismiss(animated: true, completion: nil)
                     }
                     // TODO: handle error
@@ -74,6 +80,24 @@ class FinishAddLocationViewController: UIViewController {
             return CLLocationCoordinate2DMake(lat, lon)
         }
         return nil
+    }
+    
+    // MARK: Loading state
+    
+    func setLoading(_ loading: Bool) {
+        if loading {
+            DispatchQueue.main.async {
+                self.activityIndicator.startAnimating()
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+            }
+        }
+        DispatchQueue.main.async {
+            self.finishAddLocationButton.isEnabled = !loading
+            self.buttonEnabled(false, button: self.finishAddLocationButton)
+        }
     }
     
 

@@ -13,30 +13,28 @@ class ListTableViewController: UITableViewController {
     // MARK: Outlets and Properties
     
     @IBOutlet weak var studentTableView: UITableView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var students = [StudentInformation]()
+    var myIndicator: UIActivityIndicatorView!
     
     // MARK: Life Cycle
 
     override func viewDidLoad() {
+        myIndicator = UIActivityIndicatorView (style: UIActivityIndicatorView.Style.gray)
+        self.view.addSubview(myIndicator)
+        myIndicator.bringSubviewToFront(self.view)
+        myIndicator.center = self.view.center
         super.viewDidLoad()
-        myIndicator.isHidden = true
-        myIndicator.hidesWhenStopped = true
-        showActivityIndicator()
-        getStudentsList()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        showActivityIndicator()
         getStudentsList()
     }
     
     // MARK: Refresh list
     
     @IBAction func refreshList(_ sender: UIBarButtonItem) {
-        // self.activityIndicator.startAnimating()
         showActivityIndicator()
         getStudentsList()
     }
@@ -44,6 +42,7 @@ class ListTableViewController: UITableViewController {
     // MARK: Get list of students
     
     func getStudentsList() {
+        showActivityIndicator()
         UdacityClient.getStudentsLocation() {students, error in
             self.students = students ?? []
             DispatchQueue.main.async {
@@ -53,15 +52,7 @@ class ListTableViewController: UITableViewController {
         }
     }
     
-    // MARK: Activity Indicator
-    
-    var myIndicator: UIActivityIndicatorView {
-        let myIndicator:UIActivityIndicatorView = UIActivityIndicatorView (style: UIActivityIndicatorView.Style.gray)
-        self.view.addSubview(myIndicator)
-        myIndicator.bringSubviewToFront(self.view)
-        myIndicator.center = self.view.center
-        return myIndicator
-    }
+    // MARK: Show/Hide Activity Indicator
     
     func showActivityIndicator() {
         myIndicator.isHidden = false
@@ -70,6 +61,7 @@ class ListTableViewController: UITableViewController {
     
     func hideActivityIndicator() {
         myIndicator.stopAnimating()
+        myIndicator.isHidden = true
     }
 
     // MARK: Table view data source

@@ -14,6 +14,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var websiteTextField: UITextField!
     @IBOutlet weak var findLocationButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var objectId: String?
     
@@ -29,6 +30,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func findLocation(sender: UIButton) {
+        self.setLoading(true)
         let newLocation = locationTextField.text
         let newWebsite = websiteTextField.text
         
@@ -36,6 +38,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     }
     
     private func geocodePosition(newLocation: String) {
+        //self.activityIndicator.startAnimating()
         CLGeocoder().geocodeAddressString(newLocation) { (newMarker, error) in
             if let error = error {
                 print("Location not found.")
@@ -47,6 +50,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
                 }
                 
                 if let location = location {
+                    self.setLoading(false)
                     self.loadNewLocation(location.coordinate)
                 } else {
                     print("Location not found.")
@@ -80,6 +84,27 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         }
 
         return StudentInformation(studentInfo)
+    
+    }
+    
+    // MARK: Loading state
+    
+    func setLoading(_ loading: Bool) {
+        if loading {
+            DispatchQueue.main.async {
+                self.activityIndicator.startAnimating()
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+            }
+        }
+        DispatchQueue.main.async {
+            self.locationTextField.isEnabled = !loading
+            self.websiteTextField.isEnabled = !loading
+            self.findLocationButton.isEnabled = !loading
+            self.buttonEnabled(false, button: self.findLocationButton)
+        }
     }
     
      // MARK: Button and text field behavior

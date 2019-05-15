@@ -132,6 +132,9 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_world" translatesAutoresizingMaskIntoConstraints="NO" id="dDv-br-fkp">
                                 <rect key="frame" x="161.5" y="146" width="52" height="67"/>
                             </imageView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="9lM-Wi-waE">
+                                <rect key="frame" x="177" y="403" width="21" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -142,12 +145,15 @@
                             </constraint>
                             <constraint firstItem="dxr-2g-hZ1" firstAttribute="top" secondItem="Hmq-TI-xjg" secondAttribute="bottom" constant="8" id="JW7-4G-eXg"/>
                             <constraint firstItem="dxr-2g-hZ1" firstAttribute="leading" secondItem="Hmq-TI-xjg" secondAttribute="leading" id="JwI-Ni-OlQ"/>
+                            <constraint firstItem="9lM-Wi-waE" firstAttribute="leading" secondItem="PHh-pX-mgg" secondAttribute="leading" constant="177" id="LMy-Yb-rvg"/>
                             <constraint firstItem="Pa1-t6-cpw" firstAttribute="centerX" secondItem="PHh-pX-mgg" secondAttribute="centerX" id="OcP-Fm-zf5"/>
+                            <constraint firstItem="9lM-Wi-waE" firstAttribute="centerX" secondItem="Pa1-t6-cpw" secondAttribute="centerX" id="W0U-VI-4nu"/>
                             <constraint firstItem="dxr-2g-hZ1" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Hmq-TI-xjg" secondAttribute="trailing" id="esV-ei-3wG"/>
                             <constraint firstItem="Pa1-t6-cpw" firstAttribute="centerY" secondItem="PHh-pX-mgg" secondAttribute="centerY" id="iL4-8H-mQk"/>
                             <constraint firstItem="Hmq-TI-xjg" firstAttribute="leading" secondItem="PHh-pX-mgg" secondAttribute="leading" constant="33" id="joI-8R-cGZ"/>
                             <constraint firstItem="PHh-pX-mgg" firstAttribute="bottom" secondItem="Pa1-t6-cpw" secondAttribute="bottom" constant="62" id="pdU-Yg-gaN"/>
                             <constraint firstItem="Pa1-t6-cpw" firstAttribute="top" secondItem="dxr-2g-hZ1" secondAttribute="bottom" constant="8" id="tRe-Gc-RFT"/>
+                            <constraint firstItem="9lM-Wi-waE" firstAttribute="top" secondItem="Pa1-t6-cpw" secondAttribute="bottom" constant="15" id="tcb-I4-XFb"/>
                             <constraint firstItem="PHh-pX-mgg" firstAttribute="trailing" secondItem="Hmq-TI-xjg" secondAttribute="trailing" constant="33" id="xrt-Py-Iyc"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PHh-pX-mgg"/>
@@ -171,6 +177,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="9lM-Wi-waE" id="1La-Zz-KG8"/>
                         <outlet property="findLocationButton" destination="Pa1-t6-cpw" id="jc9-zA-NLB"/>
                         <outlet property="locationTextField" destination="Hmq-TI-xjg" id="at6-j8-Ybn"/>
                         <outlet property="websiteTextField" destination="dxr-2g-hZ1" id="U6m-bb-SNU"/>
@@ -205,6 +212,9 @@
                                     <action selector="finishAddLocation:" destination="mvg-Ne-pEB" eventType="touchUpInside" id="7vc-xB-nrB"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="8Lf-7Q-jiw">
+                                <rect key="frame" x="177.5" y="355.5" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -213,13 +223,17 @@
                             <constraint firstItem="KWb-dd-1QE" firstAttribute="trailing" secondItem="YOc-XI-ThF" secondAttribute="trailing" id="KO2-Wv-n4W"/>
                             <constraint firstItem="XxZ-oD-jCy" firstAttribute="leading" secondItem="YOc-XI-ThF" secondAttribute="leading" constant="33" id="RQc-og-y4N"/>
                             <constraint firstItem="YOc-XI-ThF" firstAttribute="bottom" secondItem="XxZ-oD-jCy" secondAttribute="bottom" constant="20" id="ReN-Ip-G2M"/>
+                            <constraint firstItem="8Lf-7Q-jiw" firstAttribute="centerY" secondItem="YOc-XI-ThF" secondAttribute="centerY" id="Xh3-Yn-fqb"/>
                             <constraint firstItem="YOc-XI-ThF" firstAttribute="trailing" secondItem="XxZ-oD-jCy" secondAttribute="trailing" constant="33" id="m95-s2-Bti"/>
+                            <constraint firstItem="8Lf-7Q-jiw" firstAttribute="centerX" secondItem="YOc-XI-ThF" secondAttribute="centerX" id="psF-sv-m7R"/>
                             <constraint firstItem="KWb-dd-1QE" firstAttribute="leading" secondItem="YOc-XI-ThF" secondAttribute="leading" id="wCl-1N-t5T"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="YOc-XI-ThF"/>
                     </view>
                     <navigationItem key="navigationItem" title="Add Location" id="ac2-Fs-cC7"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="8Lf-7Q-jiw" id="ezk-0X-9Y7"/>
+                        <outlet property="finishAddLocationButton" destination="XxZ-oD-jCy" id="RP0-i3-lTB"/>
                         <outlet property="mapView" destination="KWb-dd-1QE" id="b4h-NT-eN7"/>
                     </connections>
                 </viewController>
@@ -235,10 +249,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <activityIndicatorView key="tableFooterView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" id="Zx7-E5-4OT">
-                            <rect key="frame" x="0.0" y="72" width="375" height="20"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        </activityIndicatorView>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="StudentTableViewCell" textLabel="Dfb-ah-DcS" detailTextLabel="R4q-qb-1Xw" imageView="wZ4-wP-Fcq" style="IBUITableViewCellStyleSubtitle" id="j0L-Cq-aaF">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -297,7 +307,6 @@
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="Zx7-E5-4OT" id="c7g-1u-o4t"/>
                         <outlet property="studentTableView" destination="qje-sF-b6R" id="BdQ-Az-uRP"/>
                     </connections>
                 </tableViewController>
@@ -385,7 +394,7 @@
                                 </connections>
                             </button>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="IHT-bu-7Em">
-                                <rect key="frame" x="179" y="436" width="21" height="20"/>
+                                <rect key="frame" x="179.5" y="436" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -399,7 +408,6 @@
                                 <variation key="heightClass=compact-widthClass=compact" constant="10"/>
                             </constraint>
                             <constraint firstItem="ggt-W6-5yc" firstAttribute="top" secondItem="zjk-Im-swW" secondAttribute="top" constant="40" id="FcY-8h-yBP"/>
-                            <constraint firstItem="IHT-bu-7Em" firstAttribute="leading" secondItem="zjk-Im-swW" secondAttribute="leading" constant="179" id="FeR-nU-LuO"/>
                             <constraint firstItem="zjk-Im-swW" firstAttribute="trailing" secondItem="mYf-Xc-IFZ" secondAttribute="trailing" constant="16" id="Fhs-pw-AWC"/>
                             <constraint firstItem="ggt-W6-5yc" firstAttribute="centerX" secondItem="zjk-Im-swW" secondAttribute="centerX" id="HCW-Gw-Fpt"/>
                             <constraint firstItem="aGb-U3-Y1p" firstAttribute="centerY" secondItem="zjk-Im-swW" secondAttribute="centerY" id="HQW-SH-sDz"/>
