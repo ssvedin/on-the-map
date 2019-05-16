@@ -86,8 +86,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
-            if let toOpen = view.annotation?.subtitle! {
-                UIApplication.shared.open(URL(string: toOpen)!, options: [:], completionHandler: nil)
+            if let toOpen = view.annotation?.subtitle {
+                openLink(toOpen ?? "")
+                //UIApplication.shared.open(URL(string: toOpen)!, options: [:], completionHandler: nil)
             }
         }
     }
