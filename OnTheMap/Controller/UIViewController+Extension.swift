@@ -10,17 +10,7 @@ import UIKit
 
 extension UIViewController {
     
-    // MARK: Log Out
-    
-    @IBAction func logout(_ sender: UIBarButtonItem) {
-        UdacityClient.logout {
-            DispatchQueue.main.async {
-                self.dismiss(animated: true, completion: nil)
-            }
-        }
-    }
-    
-    // MARK: Add Location
+    // MARK: Add Location action
     
     @IBAction func addLocation(sender: UIBarButtonItem) {
         performSegue(withIdentifier: "addLocation", sender: sender)
@@ -56,5 +46,6 @@ extension UIViewController {
         UIApplication.shared.open(url, options: [:])
     }
 
+    
 
 }

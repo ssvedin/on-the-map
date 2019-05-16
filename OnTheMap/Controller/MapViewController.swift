@@ -23,26 +23,35 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.activityIndicator.startAnimating()
-        getStudentsPins()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        self.activityIndicator.startAnimating()
         getStudentsPins()
+    }
+    
+    // MARK: Logout
+    
+    @IBAction func logout(_ sender: UIBarButtonItem) {
+        self.activityIndicator.startAnimating()
+        UdacityClient.logout {
+            DispatchQueue.main.async {
+                self.dismiss(animated: true, completion: nil)
+                self.activityIndicator.stopAnimating()
+            }
+        }
     }
     
     // MARK: Refresh map
     
     @IBAction func refreshMap(_ sender: UIBarButtonItem) {
-        self.activityIndicator.startAnimating()
         getStudentsPins()
     }
     
     // MARK: Add map annotations
     
     func getStudentsPins() {
+        self.activityIndicator.startAnimating()
         UdacityClient.getStudentsLocation() { locations, error in
             self.locations = locations ?? []
             for dictionary in locations ?? [] {

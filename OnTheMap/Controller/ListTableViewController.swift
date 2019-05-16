@@ -24,6 +24,7 @@ class ListTableViewController: UITableViewController {
         self.view.addSubview(myIndicator)
         myIndicator.bringSubviewToFront(self.view)
         myIndicator.center = self.view.center
+        showActivityIndicator()
         super.viewDidLoad()
     }
     
@@ -32,10 +33,21 @@ class ListTableViewController: UITableViewController {
         getStudentsList()
     }
     
+    // MARK: Logout
+    
+    @IBAction func logout(_ sender: UIBarButtonItem) {
+        showActivityIndicator()
+        UdacityClient.logout {
+            DispatchQueue.main.async {
+                self.dismiss(animated: true, completion: nil)
+                self.hideActivityIndicator()
+            }
+        }
+    }
+    
     // MARK: Refresh list
     
     @IBAction func refreshList(_ sender: UIBarButtonItem) {
-        showActivityIndicator()
         getStudentsList()
     }
     
@@ -46,22 +58,10 @@ class ListTableViewController: UITableViewController {
         UdacityClient.getStudentsLocation() {students, error in
             self.students = students ?? []
             DispatchQueue.main.async {
-                self.hideActivityIndicator()
                 self.tableView.reloadData()
+                self.hideActivityIndicator()
             }
         }
-    }
-    
-    // MARK: Show/Hide Activity Indicator
-    
-    func showActivityIndicator() {
-        myIndicator.isHidden = false
-        myIndicator.startAnimating()
-    }
-    
-    func hideActivityIndicator() {
-        myIndicator.stopAnimating()
-        myIndicator.isHidden = true
     }
 
     // MARK: Table view data source
@@ -86,6 +86,18 @@ class ListTableViewController: UITableViewController {
         let student = students[indexPath.row]
         openLink(student.mediaURL ?? "")
         //UIApplication.shared.open(URL(string: student.mediaURL ?? "")!, options: [:], completionHandler: nil)
+    }
+    
+    // MARK: Show/Hide Activity Indicator
+    
+    func showActivityIndicator() {
+        myIndicator.isHidden = false
+        myIndicator.startAnimating()
+    }
+    
+    func hideActivityIndicator() {
+        myIndicator.stopAnimating()
+        myIndicator.isHidden = true
     }
     
 }

@@ -60,7 +60,7 @@
                     <navigationItem key="navigationItem" title="On The Map" id="Scg-8f-CMp" userLabel="On The Map">
                         <barButtonItem key="leftBarButtonItem" title="LOGOUT" id="NiZ-Yi-Zwp">
                             <connections>
-                                <action selector="logout:" destination="9pv-A4-QxB" id="1Ie-89-xQi"/>
+                                <action selector="logout:" destination="9pv-A4-QxB" id="HhI-k1-sch"/>
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
@@ -288,7 +288,7 @@
                     <navigationItem key="navigationItem" title="On The Map" id="Fqx-Xc-8cR">
                         <barButtonItem key="leftBarButtonItem" title="LOGOUT" id="eb0-BH-4Fu">
                             <connections>
-                                <action selector="logout:" destination="pSN-bU-5uj" id="OLz-kK-JXe"/>
+                                <action selector="logout:" destination="pSN-bU-5uj" id="3cR-bq-wjD"/>
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
