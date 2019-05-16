@@ -11,12 +11,15 @@ import MapKit
 
 class FinishAddLocationViewController: UIViewController {
     
+    // MARK: Outlets and properties
+    
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var finishAddLocationButton: UIButton!
     
-    
     var studentInformation: StudentInformation?
+    
+    // MARK: Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +41,8 @@ class FinishAddLocationViewController: UIViewController {
         }
     }
     
+    // MARK: Add or Update location
+    
     @IBAction func finishAddLocation(_ sender: UIButton) {
         self.setLoading(true)
         if let studentLocation = studentInformation {
@@ -47,21 +52,26 @@ class FinishAddLocationViewController: UIViewController {
                         self.setLoading(false)
                         self.dismiss(animated: true, completion: nil)
                     }
-                    // TODO: handle error
-                    print(error?.localizedDescription as Any)
+                    self.showAlert(message: error?.localizedDescription ?? "", title: "Error")
+                    self.setLoading(false)
                 }
             } else {
                 UdacityClient.updateStudentLocation(information: studentLocation) { (success, error) in
-                    DispatchQueue.main.async {
+                    if success {
+                        DispatchQueue.main.async {
+                            self.setLoading(false)
+                            self.dismiss(animated: true, completion: nil)
+                        }
+                    } else {
+                        self.showAlert(message: error?.localizedDescription ?? "", title: "Error")
                         self.setLoading(false)
-                        self.dismiss(animated: true, completion: nil)
                     }
-                    // TODO: handle error
-                    print(error?.localizedDescription as Any)
                 }
             }
         }
     }
+    
+    // MARK: New location in map
     
     private func showLocations(location: Location) {
         mapView.removeAnnotations(mapView.annotations)
@@ -100,5 +110,4 @@ class FinishAddLocationViewController: UIViewController {
         }
     }
     
-
 }

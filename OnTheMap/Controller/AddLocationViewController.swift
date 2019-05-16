@@ -53,7 +53,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         geocodePosition(newLocation: newLocation ?? "")
     }
     
-    // MARK: Geocode position
+    // MARK: Find geocode position
     
     private func geocodePosition(newLocation: String) {
         CLGeocoder().geocodeAddressString(newLocation) { (newMarker, error) in
