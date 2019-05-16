@@ -45,7 +45,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         let newLocation = locationTextField.text
         
         guard let url = URL(string: self.websiteTextField.text!), UIApplication.shared.canOpenURL(url) else {
-            self.showAlert(message: "Please include 'https://' in your link.", title: "Invalid URL")
+            self.showAlert(message: "Please include 'http://' in your link.", title: "Invalid URL")
             setLoading(false)
             return
         }
@@ -56,9 +56,10 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     // MARK: Geocode position
     
     private func geocodePosition(newLocation: String) {
-        //self.activityIndicator.startAnimating()
         CLGeocoder().geocodeAddressString(newLocation) { (newMarker, error) in
             if let error = error {
+                self.showAlert(message: error.localizedDescription, title: "Location Not Found")
+                self.setLoading(false)
                 print("Location not found.")
             } else {
                 var location: CLLocation?
@@ -68,10 +69,11 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
                 }
                 
                 if let location = location {
-                    self.setLoading(false)
                     self.loadNewLocation(location.coordinate)
                 } else {
-                    print("Location not found.")
+                    self.showAlert(message: "Please try again later.", title: "Error")
+                    self.setLoading(false)
+                    print("There was an error.")
                 }
             }
         }
