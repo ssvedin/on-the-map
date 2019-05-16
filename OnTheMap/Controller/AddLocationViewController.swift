@@ -46,6 +46,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         
         guard let url = URL(string: self.websiteTextField.text!), UIApplication.shared.canOpenURL(url) else {
             self.showAlert(message: "Please include 'https://' in your link.", title: "Invalid URL")
+            setLoading(false)
             return
         }
 
