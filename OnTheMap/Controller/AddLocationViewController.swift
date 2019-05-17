@@ -38,7 +38,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
-    // MARK: Find location
+    // MARK: Find location action
     
     @IBAction func findLocation(sender: UIButton) {
         self.setLoading(true)
@@ -131,7 +131,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-     // MARK: Button and text field behavior
+     // MARK: Enable and Disable Buttons and Text Fields
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == locationTextField {

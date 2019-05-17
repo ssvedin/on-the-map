@@ -85,7 +85,6 @@ class ListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let student = students[indexPath.row]
         openLink(student.mediaURL ?? "")
-        //UIApplication.shared.open(URL(string: student.mediaURL ?? "")!, options: [:], completionHandler: nil)
     }
     
     // MARK: Show/Hide Activity Indicator

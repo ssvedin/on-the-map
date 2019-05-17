@@ -66,7 +66,29 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    // MARK: Button and text field behavior
+    // MARK: Loading state
+    
+    func setLoggingIn(_ loggingIn: Bool) {
+        if loggingIn {
+            DispatchQueue.main.async {
+                self.activityIndicator.startAnimating()
+                self.buttonEnabled(false, button: self.loginButton)
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+                self.buttonEnabled(true, button: self.loginButton)
+            }
+        }
+        DispatchQueue.main.async {
+            self.emailField.isEnabled = !loggingIn
+            self.passwordField.isEnabled = !loggingIn
+            self.loginButton.isEnabled = !loggingIn
+            self.signUpButton.isEnabled = !loggingIn
+        }
+    }
+    
+    // MARK: Enable and Disable Buttons and Text Fields
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == emailField {
@@ -123,28 +145,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             login(loginButton)
         }
         return true
-    }
-    
-    // MARK: Loading state
-    
-    func setLoggingIn(_ loggingIn: Bool) {
-        if loggingIn {
-            DispatchQueue.main.async {
-                self.activityIndicator.startAnimating()
-                self.buttonEnabled(false, button: self.loginButton)
-            }
-        } else {
-            DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
-                self.buttonEnabled(true, button: self.loginButton)
-            }
-        }
-        DispatchQueue.main.async {
-            self.emailField.isEnabled = !loggingIn
-            self.passwordField.isEnabled = !loggingIn
-            self.loginButton.isEnabled = !loggingIn
-            self.signUpButton.isEnabled = !loggingIn
-        }
     }
     
 }
