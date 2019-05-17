@@ -49,7 +49,7 @@ class FinishAddLocationViewController: UIViewController {
             if studentLocation.objectId == nil {
                 UdacityClient.addStudentLocation(information: studentLocation) { (success, error) in
                     DispatchQueue.main.async {
-                        self.setLoading(false)
+                        self.setLoading(true)
                         self.dismiss(animated: true, completion: nil)
                     }
                     self.showAlert(message: error?.localizedDescription ?? "", title: "Error")

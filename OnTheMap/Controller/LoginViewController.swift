@@ -131,17 +131,18 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         if loggingIn {
             DispatchQueue.main.async {
                 self.activityIndicator.startAnimating()
+                self.buttonEnabled(false, button: self.loginButton)
             }
         } else {
             DispatchQueue.main.async {
                 self.activityIndicator.stopAnimating()
+                self.buttonEnabled(true, button: self.loginButton)
             }
         }
         DispatchQueue.main.async {
             self.emailField.isEnabled = !loggingIn
             self.passwordField.isEnabled = !loggingIn
             self.loginButton.isEnabled = !loggingIn
-            self.buttonEnabled(false, button: self.loginButton)
             self.signUpButton.isEnabled = !loggingIn
         }
     }

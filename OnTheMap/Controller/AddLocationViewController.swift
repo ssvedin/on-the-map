@@ -116,17 +116,18 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
         if loading {
             DispatchQueue.main.async {
                 self.activityIndicator.startAnimating()
+                self.buttonEnabled(false, button: self.findLocationButton)
             }
         } else {
             DispatchQueue.main.async {
                 self.activityIndicator.stopAnimating()
+                self.buttonEnabled(true, button: self.findLocationButton)
             }
         }
         DispatchQueue.main.async {
             self.locationTextField.isEnabled = !loading
             self.websiteTextField.isEnabled = !loading
             self.findLocationButton.isEnabled = !loading
-            self.buttonEnabled(false, button: self.findLocationButton)
         }
     }
     
