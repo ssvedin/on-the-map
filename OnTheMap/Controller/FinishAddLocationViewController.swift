@@ -47,26 +47,43 @@ class FinishAddLocationViewController: UIViewController {
         self.setLoading(true)
         if let studentLocation = studentInformation {
             if studentLocation.objectId == nil {
-                UdacityClient.addStudentLocation(information: studentLocation) { (success, error) in
-                    DispatchQueue.main.async {
-                        self.setLoading(true)
-                        self.dismiss(animated: true, completion: nil)
-                    }
-                    self.showAlert(message: error?.localizedDescription ?? "", title: "Error")
-                    self.setLoading(false)
-                }
-            } else {
-                UdacityClient.updateStudentLocation(information: studentLocation) { (success, error) in
-                    if success {
-                        DispatchQueue.main.async {
-                            self.setLoading(false)
-                            self.dismiss(animated: true, completion: nil)
+                    UdacityClient.addStudentLocation(information: studentLocation) { (success, error) in
+                        if success {
+                            DispatchQueue.main.async {
+                                self.setLoading(true)
+                                self.dismiss(animated: true, completion: nil)
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                self.showAlert(message: error?.localizedDescription ?? "", title: "Error")
+                                self.setLoading(false)
+                            }
                         }
-                    } else {
-                        self.showAlert(message: error?.localizedDescription ?? "", title: "Error")
-                        self.setLoading(false)
                     }
-                }
+            } else {
+                let alertVC = UIAlertController(title: "", message: "This student has already posted a location. Would you like to overwrite this location?", preferredStyle: .alert)
+                alertVC.addAction(UIAlertAction(title: "Overwrite", style: .default, handler: { (action: UIAlertAction) in
+                    UdacityClient.updateStudentLocation(information: studentLocation) { (success, error) in
+                        if success {
+                            DispatchQueue.main.async {
+                                self.setLoading(true)
+                                self.dismiss(animated: true, completion: nil)
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                self.showAlert(message: error?.localizedDescription ?? "", title: "Error")
+                                self.setLoading(false)
+                            }
+                        }
+                    }
+                }))
+                alertVC.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction) in
+                    DispatchQueue.main.async {
+                        self.setLoading(false)
+                        alertVC.dismiss(animated: true, completion: nil)
+                    }
+                }))
+                self.present(alertVC, animated: true)
             }
         }
     }
@@ -98,15 +115,16 @@ class FinishAddLocationViewController: UIViewController {
         if loading {
             DispatchQueue.main.async {
                 self.activityIndicator.startAnimating()
+                self.buttonEnabled(false, button: self.finishAddLocationButton)
             }
         } else {
             DispatchQueue.main.async {
                 self.activityIndicator.stopAnimating()
+                self.buttonEnabled(true, button: self.finishAddLocationButton)
             }
         }
         DispatchQueue.main.async {
             self.finishAddLocationButton.isEnabled = !loading
-            self.buttonEnabled(false, button: self.finishAddLocationButton)
         }
     }
     
