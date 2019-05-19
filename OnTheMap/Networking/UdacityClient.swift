@@ -18,6 +18,38 @@ class UdacityClient: NSObject {
         static var objectId = ""
     }
     
+    enum Endpoints {
+        
+        case udacitySignUp
+        case udacityBase
+        case parseBase
+        case updateLocation
+        case getLoggedInUser
+        case getLoggedInUserProfile
+        
+        var stringValue: String {
+            switch self {
+            case .udacitySignUp:
+                return "https://auth.udacity.com/sign-up"
+            case .udacityBase:
+                return "https://onthemap-api.udacity.com/v1"
+            case .parseBase:
+                return "https://onthemap-api.udacity.com/v1/StudentLocation" //"https://parse.udacity.com/parse/classes/StudentLocation"
+            case .updateLocation:
+                return "https://onthemap-api.udacity.com/v1/StudentLocation" + Auth.objectId //"https://parse.udacity.com/parse/classes/StudentLocation" + Auth.objectId
+            case .getLoggedInUser:
+                return "https://onthemap-api.udacity.com/v1/StudentLocation" + Auth.key  //"https://parse.udacity.com/parse/classes/StudentLocation" + "?where=%7B%22uniqueKey%22%3A%22\(Auth.key)%22%7D"
+            case .getLoggedInUserProfile:
+                return "https://onthemap-api.udacity.com/v1/StudentLocation/users/" + Auth.key
+            }
+        }
+        
+        var url: URL {
+            return URL(string: stringValue)!
+        }
+        
+    }
+    
     override init() {
         super.init()
     }
@@ -59,6 +91,21 @@ class UdacityClient: NSObject {
                 Auth.sessionId = responseObject.session.id
                 Auth.key = (responseObject.account.key)
                 print("Logged in. sessionId: \(String(describing: Auth.sessionId))")
+                
+                getLoggedInUserInfo(completion: { (success, error) in
+                    if success {
+                        print("Logged in user's objectId from POST: \(Auth.objectId)")
+                    }
+                })
+                
+                getLoggedInUserProfile(completion: { (success, error) in
+                    if success {
+                        print("Logged in user's profile fetched.")
+                    }
+                })
+                
+                /*
+                // Use taskForGETRequest below
                 var profileURLString = URLRequest(url: URL(string: Constants.Udacity.udacityBaseURL + "/users/\(responseObject.account.key)")!)
                 profileURLString.httpMethod = "GET"
                 let task = URLSession.shared.dataTask(with: profileURLString) { data, response, error in
@@ -83,7 +130,9 @@ class UdacityClient: NSObject {
                     
                 }
                 task.resume()
+ */
                 completion(true, nil)
+ 
             } catch {
                 do {
                     let errorResponse = try decoder.decode(LoginErrorResponse.self, from: data) as Error
@@ -98,12 +147,13 @@ class UdacityClient: NSObject {
             }
             
         }
-       task.resume()
-        
+        task.resume()
+
     }
     
+    /*
     class func getLoggedInUserInfo(completion: @escaping (Bool, Error?) -> Void) {
-        var request = URLRequest(url: URL(string: Constants.Parse.parseBaseURL + "?where=%7B%22uniqueKey%22%3A%22\(Auth.key)%22%7D")!)
+        var request = URLRequest(url: Endpoints.getLoggedInUser.url)
         request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -122,6 +172,37 @@ class UdacityClient: NSObject {
         }
         task.resume()
     }
+    */
+    
+    class func getLoggedInUserInfo(completion: @escaping (Bool, Error?) -> Void) {
+        RequestHelpers.taskForGETRequest(url: Endpoints.getLoggedInUser.url, apiType: "Udacity", responseType: StudentInformation.self) { (response, error) in
+            if let response = response {
+                Auth.objectId = response.objectId ?? ""
+                print("objectId from getLoggedInUserInfo: \(Auth.objectId)")
+                print("getLoggedInUserInfo response: \(response)")
+                completion(true, nil)
+            } else {
+                print("Failed to get logged in user's objectId.")
+                completion(false, error)
+            }
+        }
+    }
+    
+    class func getLoggedInUserProfile(completion: @escaping (Bool, Error?) -> Void) {
+        RequestHelpers.taskForGETRequest(url: Endpoints.getLoggedInUserProfile.url, apiType: "Udacity", responseType: UserProfile.self) { (response, error) in
+            if let response = response {
+                print("printing profile")
+                print("First Name : \(response.firstName) && Last Name : \(response.lastName) && Full Name: \(response.nickname)")
+                Auth.firstName = response.firstName
+                Auth.lastName = response.lastName
+                completion(true, nil)
+            } else {
+                print("Failed to get user's profile.")
+                completion(false, error)
+            }
+        }
+    }
+
     
     class func logout(completion: @escaping () -> Void) {
         var request = URLRequest(url: URL(string: Constants.Udacity.udacityBaseURL + "/session")!)
@@ -149,8 +230,9 @@ class UdacityClient: NSObject {
         task.resume()
     }
     
+    /*
     class func getStudentsLocation(completion: @escaping ([StudentInformation]?, Error?) -> Void) {
-        var request = URLRequest(url: URL(string: Constants.Parse.parseBaseURL)!)
+        var request = URLRequest(url: Endpoints.parseBase.url)
         request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         let task = URLSession.shared.dataTask(with: request) { data, response, error  in
@@ -162,20 +244,38 @@ class UdacityClient: NSObject {
             do {
                 let responseObject = try decoder.decode(StudentsLocation.self, from: data)
                 completion(responseObject.results, nil)
+                print(responseObject.results)
             } catch {
                 completion(nil, error)
             }
         }
         task.resume()
     }
+ */
+
+    
+    class func getStudentsLocation(completion: @escaping ([StudentInformation]?, Error?) -> Void) {
+        RequestHelpers.taskForGETRequest(url: Endpoints.parseBase.url, apiType: "Parse", responseType: StudentsLocation.self) { (response, error) in
+            if let response = response {
+                completion(response.results, nil)
+                //print(response.results)
+            } else {
+                completion([], error)
+                // TODO: alert about error fetching students locations
+            }
+        }
+    }
+    
     
     class func addStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
         
-        getLoggedInUserInfo { (true, error) in
-            print("Logged in user's objectID from POST: \(Auth.objectId)")
-        }
+        getLoggedInUserInfo(completion: { (success, error) in
+            if success {
+                print("Logged in user's objectId from POST: \(Auth.objectId)")
+            }
+        })
         
-        var request = URLRequest(url: URL(string: Constants.Parse.parseBaseURL)!)
+        var request = URLRequest(url: Endpoints.parseBase.url)
         request.httpMethod = "POST"
         request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
@@ -204,11 +304,13 @@ class UdacityClient: NSObject {
     
     class func updateStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void ) {
         
-        getLoggedInUserInfo { (true, error) in
-            print("Logged in user's objectID from PUT: \(Auth.objectId)")
-        }
+        getLoggedInUserInfo(completion: { (success, error) in
+            if success {
+                print("Logged in user's objectId from PUT: \(Auth.objectId)")
+            }
+        })
         
-        var request = URLRequest(url: URL(string: Constants.Parse.parseBaseURL + "\(information.objectId ?? "")")!)
+        var request = URLRequest(url: Endpoints.updateLocation.url)
         request.httpMethod = "PUT"
         request.addValue(Constants.Parse.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.Parse.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
