@@ -18,7 +18,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    let signUpUrl = URL(string: Constants.Udacity.udacitySignUpURL)!
+    let signUpUrl = UdacityClient.Endpoints.udacitySignUp.url
     
     var emailFieldIsEmpty = true
     var passwordFieldIsEmpty = true

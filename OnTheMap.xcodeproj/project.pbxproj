@@ -74,13 +74,13 @@
 			children = (
 				0437CECD224B283F00F6E3AC /* LoginResponse.swift */,
 				0437CED0224FDE2D00F6E3AC /* Session.swift */,
+				04B57EE72271778200DF092C /* UserProfile.swift */,
 				04B02D28225013F90014CF61 /* LoginErrorResponse.swift */,
 				04B02D2A22512A6B0014CF61 /* StudentsLocation.swift */,
 				04B02D26224FFA2F0014CF61 /* StudentInformation.swift */,
 				041497FD2263B80C004CB725 /* Location.swift */,
 				041497FB225EEA91004CB725 /* PostLocationResponse.swift */,
 				04B57EE122682ADC00DF092C /* UpdateLocationResponse.swift */,
-				04B57EE72271778200DF092C /* UserProfile.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

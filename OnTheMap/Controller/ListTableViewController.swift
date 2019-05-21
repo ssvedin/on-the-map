@@ -55,7 +55,7 @@ class ListTableViewController: UITableViewController {
     
     func getStudentsList() {
         showActivityIndicator()
-        UdacityClient.getStudentsLocation() {students, error in
+        UdacityClient.getStudentLocations() {students, error in
             self.students = students ?? []
             DispatchQueue.main.async {
                 self.tableView.reloadData()

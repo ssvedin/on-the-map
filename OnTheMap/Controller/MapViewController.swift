@@ -52,7 +52,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     func getStudentsPins() {
         self.activityIndicator.startAnimating()
-        UdacityClient.getStudentsLocation() { locations, error in
+        UdacityClient.getStudentLocations() { locations, error in
             self.locations = locations ?? []
             for dictionary in locations ?? [] {
                 let lat = CLLocationDegrees(dictionary.latitude ?? 0.0)

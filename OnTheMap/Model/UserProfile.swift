@@ -18,4 +18,5 @@ struct UserProfile: Codable {
         case lastName = "last_name"
         case nickname
     }
+ 
 }
