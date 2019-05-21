@@ -12,3 +12,6 @@ The App also allows users to add or update their own location, and provide a lin
 * You need to have Udacity credentials in order to log in.
 * This application was built using Xcode 10.1 and can be run on iOS 12.1 devices or simulators
 
+## Demo
+![](OnTheMapDemo.gif)
+
