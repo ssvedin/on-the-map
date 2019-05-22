@@ -24,7 +24,8 @@ class UdacityClient: NSObject {
         
         case udacitySignUp
         case udacityLogin
-        case studentLocations
+        case getStudentLocations
+        case addLocation
         case updateLocation
         case getLoggedInUser
         case getLoggedInUserProfile
@@ -35,7 +36,9 @@ class UdacityClient: NSObject {
                 return "https://auth.udacity.com/sign-up"
             case .udacityLogin:
                 return Endpoints.base + "/session"
-            case .studentLocations:
+            case .getStudentLocations:
+                return Endpoints.base + "/StudentLocation?limit=100&order=-updatedAt"
+            case .addLocation:
                 return Endpoints.base + "/StudentLocation"
             case .updateLocation:
                 return Endpoints.base + "/StudentLocation/" + Auth.objectId
@@ -246,7 +249,7 @@ class UdacityClient: NSObject {
     // MARK: Get All Students
     
     class func getStudentLocations(completion: @escaping ([StudentInformation]?, Error?) -> Void) {
-        RequestHelpers.taskForGETRequest(url: Endpoints.studentLocations.url, apiType: "Parse", responseType: StudentsLocation.self) { (response, error) in
+        RequestHelpers.taskForGETRequest(url: Endpoints.getStudentLocations.url, apiType: "Parse", responseType: StudentsLocation.self) { (response, error) in
             if let response = response {
                 completion(response.results, nil)
             } else {
@@ -258,7 +261,7 @@ class UdacityClient: NSObject {
     // MARK: Add a Location
     
     class func addStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
-        var request = URLRequest(url: Endpoints.studentLocations.url)
+        var request = URLRequest(url: Endpoints.addLocation.url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString ?? "")\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}".data(using: .utf8)
