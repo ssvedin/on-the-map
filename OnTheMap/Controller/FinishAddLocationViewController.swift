@@ -46,7 +46,7 @@ class FinishAddLocationViewController: UIViewController {
     @IBAction func finishAddLocation(_ sender: UIButton) {
         self.setLoading(true)
         if let studentLocation = studentInformation {
-            if studentLocation.objectId == nil {
+            if UdacityClient.Auth.objectId == "" {
                     UdacityClient.addStudentLocation(information: studentLocation) { (success, error) in
                         if success {
                             DispatchQueue.main.async {

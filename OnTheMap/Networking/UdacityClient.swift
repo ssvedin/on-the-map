@@ -95,14 +95,8 @@ class UdacityClient: NSObject {
                 print(String(data: newData, encoding: .utf8)!)
                 let responseObject = try JSONDecoder().decode(LoginResponse.self, from: newData)
                 Auth.sessionId = responseObject.session.id
-                Auth.key = (responseObject.account.key)
-                
-                getLoggedInUserInfo(completion: { (success, error) in
-                    if success {
-                        print("Logged in user's objectId: \(Auth.objectId)")
-                    }
-                })
-                
+                Auth.key = responseObject.account.key
+
                 var profileURLString = URLRequest(url: Endpoints.getLoggedInUserProfile.url)
                 profileURLString.httpMethod = "GET"
                 profileURLString.addValue("application/json", forHTTPHeaderField: "Accept") // delete
@@ -165,12 +159,6 @@ class UdacityClient: NSObject {
                  Auth.sessionId = response.session.id
                  Auth.key = (response.account.key)
      
-                 getLoggedInUserInfo(completion: { (success, error) in
-                     if success {
-                         print("Logged in user's objectId: \(Auth.objectId)")
-                     }
-                })
-     
                 getLoggedInUserProfile(completion: { (success, error) in
                     if success {
                         print("Logged in user's profile fetched.")
@@ -184,21 +172,6 @@ class UdacityClient: NSObject {
         }
     }
      */
-    
-    // MARK: Get Logged In User's objectId in order to add or update location
-    
-    class func getLoggedInUserInfo(completion: @escaping (Bool, Error?) -> Void) {
-        RequestHelpers.taskForGETRequest(url: Endpoints.getLoggedInUser.url, apiType: "Parse", responseType: StudentInformation.self) { (response, error) in
-            if let response = response {
-                Auth.objectId = response.objectId ?? ""
-                print("getLoggedInUserInfo response: \(response)")
-                completion(true, nil)
-            } else {
-                print("Decoding Student Info for objectId failed.")
-                completion(false, error)
-            }
-        }
-    }
     
     // MARK: Get Logged In User's Name
     
@@ -277,6 +250,7 @@ class UdacityClient: NSObject {
                 print(String(data: data, encoding: .utf8)!)
                 response = try decoder.decode(PostLocationResponse.self, from: data)
                 if let response = response, response.createdAt != nil {
+                    Auth.objectId = response.objectId ?? ""
                     completion(true, nil)
                 }
             } catch {
