@@ -62,7 +62,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 self.performSegue(withIdentifier: "login", sender: nil)
             }
         } else {
-            showAlert(message: error?.localizedDescription ?? "", title: "Login Error")
+            showAlert(message: "Please enter valid credentials.", title: "Login Error")
         }
     }
     

@@ -70,75 +70,11 @@ class UdacityClient: NSObject {
     // MARK: Log In
     
     class func login(email: String, password: String, completion: @escaping (Bool, Error?) -> Void) {
-        var request = URLRequest(url: Endpoints.udacityLogin.url)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = "{\"udacity\": {\"username\": \"\(email)\", \"password\": \"\(password)\"}}".data(using: .utf8)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                completion(false, error)
-                return
-            }
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if statusCode == 400 || statusCode == 403 {
-                DispatchQueue.main.async {
-                    completion(false, error)
-                }
-            }
-            
-            do {
-                let range = 5..<data.count
-                let newData = data.subdata(in: range)
-                print(String(data: newData, encoding: .utf8)!)
-                let responseObject = try JSONDecoder().decode(LoginResponse.self, from: newData)
-                Auth.sessionId = responseObject.session.id
-                Auth.key = responseObject.account.key
-                
-                getLoggedInUserProfile(completion: { (success, error) in
-                    if success {
-                        print("Logged in user's profile fetched.")
-                    }
-                })
-                
-                DispatchQueue.main.async {
-                    completion(true, nil)
-                }
-            } catch {
-                do {
-                    let errorResponse = try JSONDecoder().decode(LoginErrorResponse.self, from: data) as Error
-                    DispatchQueue.main.async {
-                        completion(false, errorResponse)
-                    }
-                } catch {
-                    DispatchQueue.main.async {
-                        completion(false, error)
-                    }
-                }
-            }
-            
-        }
-        task.resume()
-    }
-
-    /*
-    class func login(email: String, password: String, completion: @escaping (Bool, Error?) -> Void) {
         let body = "{\"udacity\": {\"username\": \"\(email)\", \"password\": \"\(password)\"}}"
         RequestHelpers.taskForPOSTRequest(url: Endpoints.udacityLogin.url, apiType: "Udacity", responseType: LoginResponse.self, body: body, httpMethod: "POST") { (response, error) in
-     
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if statusCode == 400 || statusCode == 403 {
-                DispatchQueue.main.async {
-                    completion(false, error)
-                }
-            }
-     
             if let response = response {
                 Auth.sessionId = response.session.id
                 Auth.key = response.account.key
-     
                 getLoggedInUserProfile(completion: { (success, error) in
                     if success {
                         print("Logged in user's profile fetched.")
@@ -150,7 +86,6 @@ class UdacityClient: NSObject {
             }
         }
     }
-    */
     
     // MARK: Get Logged In User's Name
     
@@ -167,7 +102,6 @@ class UdacityClient: NSObject {
             }
         }
     }
-    
     
     // MARK: Log Out
     

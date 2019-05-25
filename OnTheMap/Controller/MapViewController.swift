@@ -53,6 +53,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     func getStudentsPins() {
         self.activityIndicator.startAnimating()
         UdacityClient.getStudentLocations() { locations, error in
+            self.annotations.removeAll()
             self.locations = locations ?? []
             for dictionary in locations ?? [] {
                 let lat = CLLocationDegrees(dictionary.latitude ?? 0.0)
@@ -68,6 +69,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 self.annotations.append(annotation)
             }
             DispatchQueue.main.async {
+                self.mapView.removeAnnotations(self.annotations)
                 self.mapView.addAnnotations(self.annotations)
                 self.activityIndicator.stopAnimating()
             }
@@ -77,11 +79,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     // MARK: Map view data source
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        
         let reuseId = "pin"
-        
         var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-        
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView!.canShowCallout = true

@@ -82,10 +82,19 @@ class RequestHelpers {
                 return
             }
             do {
-                let responseObject = try JSONDecoder().decode(ResponseType.self, from: data)
+                if apiType == "Udacity" {
+                    let range = 5..<data.count
+                    let newData = data.subdata(in: range)
+                    let responseObject = try JSONDecoder().decode(ResponseType.self, from: newData)
                     DispatchQueue.main.async {
                         completion(responseObject, nil)
                     }
+                } else {
+                    let responseObject = try JSONDecoder().decode(ResponseType.self, from: data)
+                    DispatchQueue.main.async {
+                        completion(responseObject, nil)
+                    }
+                }
             } catch {
                 DispatchQueue.main.async {
                     completion(nil, error)
