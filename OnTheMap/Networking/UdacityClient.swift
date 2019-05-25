@@ -27,7 +27,6 @@ class UdacityClient: NSObject {
         case getStudentLocations
         case addLocation
         case updateLocation
-        case getLoggedInUser
         case getLoggedInUserProfile
         
         var stringValue: String {
@@ -42,8 +41,6 @@ class UdacityClient: NSObject {
                 return Endpoints.base + "/StudentLocation"
             case .updateLocation:
                 return Endpoints.base + "/StudentLocation/" + Auth.objectId
-            case .getLoggedInUser:
-                return Endpoints.base + "/StudentLocation" + "?uniqueKey=\(Auth.key)"
             case .getLoggedInUserProfile:
                 return Endpoints.base + "/users/" + Auth.key
                 
