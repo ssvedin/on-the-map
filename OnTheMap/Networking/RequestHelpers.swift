@@ -23,6 +23,9 @@ class RequestHelpers {
             request.addValue(Constants.APIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         }
         let task = URLSession.shared.dataTask(with: request) { data, response, error  in
+            if error != nil {
+                completion(nil, error)
+            }
             guard let data = data else {
                 DispatchQueue.main.async {
                     completion(nil, error)
@@ -54,7 +57,7 @@ class RequestHelpers {
     
     // MARK: Helper for POST or PUT Requests
     
-    class func taskForPOSTRequest<RequestType: Encodable, ResponseType: Decodable>(url: URL, apiType: String, responseType: ResponseType.Type, body: RequestType, httpMethod: String, completion: @escaping (ResponseType?, Error?) -> Void) {
+    class func taskForPOSTRequest<ResponseType: Decodable>(url: URL, apiType: String, responseType: ResponseType.Type, body: String, httpMethod: String, completion: @escaping (ResponseType?, Error?) -> Void) {
         var request = URLRequest(url: url)
         if httpMethod == "POST" {
             request.httpMethod = "POST"
@@ -67,9 +70,11 @@ class RequestHelpers {
         } else {
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         }
-        
-        request.httpBody = try! JSONEncoder().encode(body)
+        request.httpBody = body.data(using: String.Encoding.utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if error != nil {
+                completion(nil, error)
+            }
             guard let data = data else {
                 DispatchQueue.main.async {
                     completion(nil, error)

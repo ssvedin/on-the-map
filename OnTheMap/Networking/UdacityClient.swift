@@ -96,35 +96,16 @@ class UdacityClient: NSObject {
                 let responseObject = try JSONDecoder().decode(LoginResponse.self, from: newData)
                 Auth.sessionId = responseObject.session.id
                 Auth.key = responseObject.account.key
-
-                var profileURLString = URLRequest(url: Endpoints.getLoggedInUserProfile.url)
-                profileURLString.httpMethod = "GET"
-                profileURLString.addValue("application/json", forHTTPHeaderField: "Accept") // delete
-                profileURLString.addValue("application/json", forHTTPHeaderField: "Content-Type")  // delete
-                let task = URLSession.shared.dataTask(with: profileURLString) { data, response, error in
-                    if error != nil {
-                        return
-                    }
-                    let range = 5..<data!.count
-                    let newData = data?.subdata(in: range)
-                    print("printing profile")
-                    print(String(data: newData!, encoding: .utf8)!)
-                    
-                    guard let profileResponseData = newData else { exit(1) }
-                    print("Decoding Profile JSON")
-                    
-                    guard let profileObject = try? JSONDecoder().decode(UserProfile.self, from: profileResponseData) else {
-                        print("Failed to decode profile JSON")
-                        return
-                    }
-                    print("First Name : \(profileObject.firstName) && Last Name : \(profileObject.lastName) && Full Name: \(profileObject.nickname)")
-                    Auth.firstName = profileObject.firstName
-                    Auth.lastName = profileObject.lastName
-                    
-                }
-                task.resume()
-                completion(true, nil)
                 
+                getLoggedInUserProfile(completion: { (success, error) in
+                    if success {
+                        print("Logged in user's profile fetched.")
+                    }
+                })
+                
+                DispatchQueue.main.async {
+                    completion(true, nil)
+                }
             } catch {
                 do {
                     let errorResponse = try JSONDecoder().decode(LoginErrorResponse.self, from: data) as Error
@@ -140,46 +121,42 @@ class UdacityClient: NSObject {
             
         }
         task.resume()
-
     }
-    
+
     /*
-     class func login(email: String, password: String, completion: @escaping (Bool, Error?) -> Void) {
-         let body = "{\"udacity\": {\"username\": \"\(email)\", \"password\": \"\(password)\"}}".data(using: .utf8)
-         RequestHelpers.taskForPOSTRequest(url: Endpoints.udacityLogin.url, apiType: "Udacity", responseType: LoginResponse.self, body: body, httpMethod: "POST") { (response, error) in
+    class func login(email: String, password: String, completion: @escaping (Bool, Error?) -> Void) {
+        let body = "{\"udacity\": {\"username\": \"\(email)\", \"password\": \"\(password)\"}}"
+        RequestHelpers.taskForPOSTRequest(url: Endpoints.udacityLogin.url, apiType: "Udacity", responseType: LoginResponse.self, body: body, httpMethod: "POST") { (response, error) in
      
-             let statusCode = (response as? HTTPURLResponse)?.statusCode
-             if statusCode == 400 || statusCode == 403 {
-                 DispatchQueue.main.async {
-                     completion(false, error)
-                 }
-             }
+            let statusCode = (response as? HTTPURLResponse)?.statusCode
+            if statusCode == 400 || statusCode == 403 {
+                DispatchQueue.main.async {
+                    completion(false, error)
+                }
+            }
      
-             if let response = response {
-                 Auth.sessionId = response.session.id
-                 Auth.key = (response.account.key)
+            if let response = response {
+                Auth.sessionId = response.session.id
+                Auth.key = response.account.key
      
                 getLoggedInUserProfile(completion: { (success, error) in
                     if success {
                         print("Logged in user's profile fetched.")
                     }
                 })
-     
                 completion(true, nil)
             } else {
                 completion(false, nil)
             }
         }
     }
-     */
+    */
     
     // MARK: Get Logged In User's Name
     
-    /*
     class func getLoggedInUserProfile(completion: @escaping (Bool, Error?) -> Void) {
         RequestHelpers.taskForGETRequest(url: Endpoints.getLoggedInUserProfile.url, apiType: "Udacity", responseType: UserProfile.self) { (response, error) in
             if let response = response {
-                print("printing profile")
                 print("First Name : \(response.firstName) && Last Name : \(response.lastName) && Full Name: \(response.nickname)")
                 Auth.firstName = response.firstName
                 Auth.lastName = response.lastName
@@ -190,7 +167,7 @@ class UdacityClient: NSObject {
             }
         }
     }
-    */
+    
     
     // MARK: Log Out
     
@@ -232,78 +209,22 @@ class UdacityClient: NSObject {
     }
     
     // MARK: Add a Location
-    
+   
     class func addStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
-        var request = URLRequest(url: Endpoints.addLocation.url)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString ?? "")\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}".data(using: .utf8)
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                completion(false, error)
-                return
-            }
-            var response: PostLocationResponse!
-            let decoder = JSONDecoder()
-            do {
-                print(String(data: data, encoding: .utf8)!)
-                response = try decoder.decode(PostLocationResponse.self, from: data)
-                if let response = response, response.createdAt != nil {
-                    Auth.objectId = response.objectId ?? ""
-                    completion(true, nil)
-                }
-            } catch {
-                 completion(false, error)
-            }
-        }
-        task.resume()
-    }
-    
-    /*
-    class func addStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
-        let body = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString ?? "")\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}".data(using: .utf8)
-     RequestHelpers.taskForPOSTRequest(url: Endpoints.studentLocations.url, apiType: "Parse", responseType: PostLocationResponse.self, body: body, httpMethod: "POST") { (response, error) in
+        let body = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString ?? "")\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}"
+        RequestHelpers.taskForPOSTRequest(url: Endpoints.addLocation.url, apiType: "Parse", responseType: PostLocationResponse.self, body: body, httpMethod: "POST") { (response, error) in
             if let response = response, response.createdAt != nil {
+                Auth.objectId = response.objectId ?? ""
                 completion(true, nil)
             }
             completion(false, error)
         }
     }
-    */
     
     // MARK: Update Location
-    
-    class func updateStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void ) {
-        
-        var request = URLRequest(url: Endpoints.updateLocation.url)
-        request.httpMethod = "PUT"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString ?? "")\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}".data(using: .utf8)
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                completion(false, error)
-                return
-            }
-            var response: UpdateLocationResponse!
-            let decoder = JSONDecoder()
-            do {
-                print(String(data: data, encoding: .utf8)!)
-                response = try decoder.decode(UpdateLocationResponse.self, from: data)
-                if let response = response, response.updatedAt != nil {
-                    completion(true, nil)
-                }
-            } catch {
-                completion(false, error)
-            }
-        }
-        task.resume()
-    }
-
-    /*
+ 
     class func updateStudentLocation(information: StudentInformation, completion: @escaping (Bool, Error?) -> Void) {
-        let body = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString ?? "")\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}".data(using: .utf8)
+        let body = "{\"uniqueKey\": \"\(information.uniqueKey ?? "")\", \"firstName\": \"\(information.firstName)\", \"lastName\": \"\(information.lastName)\",\"mapString\": \"\(information.mapString ?? "")\", \"mediaURL\": \"\(information.mediaURL ?? "")\",\"latitude\": \(information.latitude ?? 0.0), \"longitude\": \(information.longitude ?? 0.0)}"
         RequestHelpers.taskForPOSTRequest(url: Endpoints.updateLocation.url, apiType: "Parse", responseType: UpdateLocationResponse.self, body: body, httpMethod: "PUT") { (response, error) in
             if let response = response, response.updatedAt != nil {
                 completion(true, nil)
@@ -311,6 +232,5 @@ class UdacityClient: NSObject {
             completion(false, error)
         }
     }
-    */
-    
+
 }
