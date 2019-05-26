@@ -53,6 +53,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     func getStudentsPins() {
         self.activityIndicator.startAnimating()
         UdacityClient.getStudentLocations() { locations, error in
+            self.mapView.removeAnnotations(self.annotations)
             self.annotations.removeAll()
             self.locations = locations ?? []
             for dictionary in locations ?? [] {
@@ -69,7 +70,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 self.annotations.append(annotation)
             }
             DispatchQueue.main.async {
-                self.mapView.removeAnnotations(self.annotations)
                 self.mapView.addAnnotations(self.annotations)
                 self.activityIndicator.stopAnimating()
             }
