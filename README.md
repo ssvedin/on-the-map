@@ -1,5 +1,5 @@
 # OnTheMap
-Udacity project: On The Map
+Udacity Project: On The Map
 
 On The Map is one of the Portfolio Apps for the iOS Developer Nanodegree from Udacity. It was created to showcase implementing networking requests, including GET, POST (including Authentication), PUT and DELETE. It also uses MapKit.
 
